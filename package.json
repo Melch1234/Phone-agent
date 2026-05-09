@@ -1,0 +1,45 @@
+{
+  "name": "phone-agent",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/server.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "tsx watch server.ts",
+    "build": "next build && tsc --project tsconfig.server.json",
+    "start": "node dist/server.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.105.4",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "next": "^14.2.35",
+    "node-cron": "^4.2.1",
+    "openai": "^6.37.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "resend": "^6.12.3",
+    "twilio": "^6.0.2",
+    "ws": "^8.20.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.6.2",
+    "@types/node-cron": "^3.0.11",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@types/ws": "^8.18.1",
+    "@vitejs/plugin-react": "^6.0.1",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.5"
+  }
+}
