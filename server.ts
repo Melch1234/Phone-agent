@@ -24,7 +24,7 @@ async function main() {
   expressApp.post('/api/incoming', handleIncoming)
   expressApp.post('/api/operators', handleOperators)
 
-  expressApp.all('*', (req, res) => {
+  expressApp.all('/{*splat}', (req, res) => {
     const parsedUrl = parse(req.url!, true)
     handle(req, res, parsedUrl)
   })
