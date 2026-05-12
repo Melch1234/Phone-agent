@@ -1,6 +1,16 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 
-export const supabase = createClient(
-  process.env.SUPABASE_URL ?? '',
-  process.env.SUPABASE_SERVICE_ROLE_KEY ?? ''
-)
+let _client: SupabaseClient | null = null
+
+// Proxy defers client creation to first use so Next.js build succeeds without env vars
+export const supabase = new Proxy({} as SupabaseClient, {
+  get(_, prop: string) {
+    if (!_client) {
+      _client = createClient(
+        process.env.SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!
+      )
+    }
+    return (_client as any)[prop]
+  }
+})
