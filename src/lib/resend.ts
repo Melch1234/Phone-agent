@@ -9,7 +9,7 @@ export async function sendEmail(opts: {
   from?: string
 }): Promise<void> {
   await resend.emails.send({
-    from: opts.from ?? 'Tour Agent <agent@yourdomain.com>',
+    from: opts.from ?? (process.env.RESEND_FROM_EMAIL ?? 'Tour Agent <onboarding@resend.dev>'),
     to: opts.to,
     subject: opts.subject,
     html: opts.html,

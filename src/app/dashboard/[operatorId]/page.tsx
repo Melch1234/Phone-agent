@@ -69,10 +69,18 @@ export default async function DashboardPage({ params, searchParams }: Props) {
         return (
           <div key={call.id} style={{ background: 'rgba(255,255,255,.04)', border: `1px solid ${call.urgent ? 'rgba(255,107,107,.35)' : 'rgba(255,255,255,.07)'}`, borderRadius: 12, padding: '1.25rem', marginBottom: '0.75rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-              <span style={{ fontWeight: 500 }}>{call.caller_number}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <span style={{ fontWeight: 500 }}>{call.caller_number}</span>
+                {call.urgent && (
+                  <a href={`tel:${call.caller_number}`} style={{
+                    fontSize: '.75rem', fontWeight: 700, padding: '2px 10px', borderRadius: 50,
+                    background: 'rgba(255,107,107,.2)', color: '#ff6b6b',
+                    textDecoration: 'none', border: '1px solid rgba(255,107,107,.4)',
+                  }}>⚠️ Call back</a>
+                )}
+              </div>
               <span style={{ opacity: .45, fontSize: '.82rem' }}>
                 {mins}:{secs.toString().padStart(2, '0')} · {new Date(call.created_at).toLocaleDateString()}
-                {call.urgent && ' · ⚠️ URGENT'}
               </span>
             </div>
             <p style={{ opacity: .7, fontSize: '.88rem', lineHeight: 1.55 }}>{call.summary || 'No summary.'}</p>

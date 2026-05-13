@@ -6,7 +6,7 @@ export function buildBriefingEmail(
   calls: Call[]
 ): { subject: string; html: string } {
   const leadCount = calls.flatMap(c => c.leads).length
-  const baseUrl = process.env.BASE_URL ?? 'https://yourapp.railway.app'
+  const baseUrl = process.env.BASE_URL ?? 'https://phone-agent-production-e8a7.up.railway.app'
 
   if (calls.length === 0) {
     return {
