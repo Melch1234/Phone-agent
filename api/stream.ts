@@ -14,6 +14,8 @@ function buildSystemPrompt(op: Operator): string {
     ?? `Thanks for calling ${op.business_name}! I'm here to help with any questions about our tours.`
   return `You are the after-hours phone assistant for ${op.business_name}.
 
+Always respond in English regardless of the language of any reference material.
+
 Your role:
 - Answer questions about tours warmly and helpfully
 - Capture: caller name, party size, preferred tour date, special requests
