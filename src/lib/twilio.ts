@@ -6,7 +6,7 @@ export function buildStreamTwiml(operatorId: string, callerNumber: string): stri
   const twiml = new VoiceResponse()
   const connect = twiml.connect()
   const stream = connect.stream({
-    url: `wss://${process.env.STREAM_HOST}/stream?operatorId=${operatorId}&callerNumber=${encodeURIComponent(callerNumber)}`,
+    url: `wss://${process.env.STREAM_HOST}/stream/${operatorId}/${encodeURIComponent(callerNumber)}`,
   })
   return twiml.toString()
 }

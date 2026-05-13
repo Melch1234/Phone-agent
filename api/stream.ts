@@ -27,10 +27,11 @@ Open every call with: "${greeting}"`
 }
 
 export async function handleStream(twilioWs: WebSocket, req: IncomingMessage): Promise<void> {
-  console.log('[stream] WebSocket connection received, url:', req.url)
-  const url = new URL(req.url ?? '/', `http://localhost`)
-  const operatorId = url.searchParams.get('operatorId')
-  console.log('[stream] operatorId:', operatorId)
+  console.log('[stream] connection url:', req.url)
+  const parts = (req.url ?? '').split('/')
+  const operatorId = parts[2]
+  const callerNumber = decodeURIComponent(parts[3] ?? 'unknown')
+  console.log('[stream] operatorId:', operatorId, 'caller:', callerNumber)
 
   if (!operatorId) { twilioWs.close(); return }
 
@@ -40,7 +41,11 @@ export async function handleStream(twilioWs: WebSocket, req: IncomingMessage): P
     .eq('id', operatorId)
     .single()
 
-  if (error || !operator) { twilioWs.close(); return }
+  if (error || !operator) {
+    console.log('[stream] operator lookup failed:', error)
+    twilioWs.close()
+    return
+  }
 
   const openaiWs = new WebSocket(OPENAI_REALTIME_URL, {
     headers: {
@@ -50,7 +55,6 @@ export async function handleStream(twilioWs: WebSocket, req: IncomingMessage): P
   })
 
   let streamSid: string | null = null
-  let callerNumber = url.searchParams.get('callerNumber') ?? 'unknown'
   let transcript = ''
   let urgent = false
   let callStartTime = Date.now()
