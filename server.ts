@@ -6,6 +6,7 @@ import express from 'express'
 import { WebSocketServer } from 'ws'
 import { handleIncoming } from './api/incoming'
 import { handleOperators } from './api/operators'
+import { handleDeleteCall } from './api/calls'
 import { handleScrape } from './api/scrape'
 import { handleSettings } from './api/settings'
 import { handleVoicePreview } from './api/voicePreview'
@@ -26,6 +27,7 @@ async function main() {
 
   expressApp.post('/api/incoming', handleIncoming)
   expressApp.post('/api/operators', handleOperators)
+  expressApp.delete('/api/calls', handleDeleteCall)
   expressApp.post('/api/scrape', handleScrape)
   expressApp.post('/api/settings', handleSettings)
   expressApp.get('/api/voice-preview', handleVoicePreview)

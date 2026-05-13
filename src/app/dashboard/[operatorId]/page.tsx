@@ -65,7 +65,7 @@ export default async function DashboardPage({ params, searchParams }: Props) {
       <h2 style={{ fontFamily: 'Fraunces, serif', fontSize: '1.3rem', fontWeight: 700, marginBottom: '1rem' }}>Recent calls</h2>
       {allCalls.length === 0 && <p style={{ opacity: .4, marginBottom: '2rem' }}>No calls yet.</p>}
       {allCalls.map((call: { id: string; caller_number: string; duration_seconds: number; summary: string; transcript: string; urgent: boolean; created_at: string }) => (
-        <CallCard key={call.id} call={call} />
+        <CallCard key={call.id} call={call} operatorId={operator.id} token={operator.dashboard_token} />
       ))}
 
       <VoicePreview
