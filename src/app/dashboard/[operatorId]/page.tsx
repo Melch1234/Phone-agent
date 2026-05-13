@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import { supabase } from '@/lib/supabase'
 import { notFound, redirect } from 'next/navigation'
+import SettingsPanel from './SettingsPanel'
 
 interface Props {
   params: Promise<{ operatorId: string }>
@@ -77,6 +78,14 @@ export default async function DashboardPage({ params, searchParams }: Props) {
           </div>
         )
       })}
+
+      <SettingsPanel
+        operatorId={operator.id}
+        token={operator.dashboard_token}
+        initialBusinessName={operator.business_name ?? ''}
+        initialGreeting={operator.greeting ?? ''}
+        initialFaq={operator.faq ?? ''}
+      />
 
       {allLeads.length > 0 && (
         <>

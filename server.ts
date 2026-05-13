@@ -6,6 +6,8 @@ import express from 'express'
 import { WebSocketServer } from 'ws'
 import { handleIncoming } from './api/incoming'
 import { handleOperators } from './api/operators'
+import { handleScrape } from './api/scrape'
+import { handleSettings } from './api/settings'
 import { handleStream } from './api/stream'
 import { startBriefingCron } from './src/lib/briefing'
 
@@ -23,6 +25,8 @@ async function main() {
 
   expressApp.post('/api/incoming', handleIncoming)
   expressApp.post('/api/operators', handleOperators)
+  expressApp.post('/api/scrape', handleScrape)
+  expressApp.post('/api/settings', handleSettings)
 
   expressApp.all('/{*splat}', (req, res) => {
     const parsedUrl = parse(req.url!, true)
