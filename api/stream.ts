@@ -35,6 +35,11 @@ export async function handleStream(twilioWs: WebSocket, req: IncomingMessage): P
 
   if (!operatorId) { twilioWs.close(); return }
 
+  // Buffer Twilio messages that arrive during the async Supabase lookup
+  const twilioBuffer: Buffer[] = []
+  const bufferTwilio = (raw: Buffer) => twilioBuffer.push(raw)
+  twilioWs.on('message', bufferTwilio)
+
   const { data: operator, error } = await supabase
     .from('operators')
     .select('*')
@@ -55,15 +60,16 @@ export async function handleStream(twilioWs: WebSocket, req: IncomingMessage): P
   })
 
   let streamSid: string | null = null
+  let audioBuffer: string[] = []
   let transcript = ''
   let urgent = false
   let callStartTime = Date.now()
-  let sessionReady = false
 
-  function maybeGreet() {
-    if (sessionReady && streamSid) {
-      console.log('[stream] both ready, triggering greeting')
-      openaiWs.send(JSON.stringify({ type: 'response.create' }))
+  function sendAudio(delta: string) {
+    if (streamSid && twilioWs.readyState === WebSocket.OPEN) {
+      twilioWs.send(JSON.stringify({ event: 'media', streamSid, media: { payload: delta } }))
+    } else {
+      audioBuffer.push(delta)
     }
   }
 
@@ -89,20 +95,13 @@ export async function handleStream(twilioWs: WebSocket, req: IncomingMessage): P
 
     switch (event.type) {
       case 'session.updated': {
-        console.log('[stream] session ready')
-        sessionReady = true
-        maybeGreet()
+        console.log('[stream] session ready, triggering greeting')
+        openaiWs.send(JSON.stringify({ type: 'response.create' }))
         break
       }
       case 'response.audio.delta': {
         const delta = event.delta as string | undefined
-        if (streamSid && delta && twilioWs.readyState === WebSocket.OPEN) {
-          twilioWs.send(JSON.stringify({
-            event: 'media',
-            streamSid,
-            media: { payload: delta },
-          }))
-        }
+        if (delta) sendAudio(delta)
         break
       }
       case 'response.audio_transcript.delta': {
@@ -131,7 +130,7 @@ export async function handleStream(twilioWs: WebSocket, req: IncomingMessage): P
     if (twilioWs.readyState === WebSocket.OPEN) twilioWs.close()
   })
 
-  twilioWs.on('message', (raw: Buffer) => {
+  function handleTwilioMessage(raw: Buffer) {
     let event: Record<string, unknown>
     try { event = JSON.parse(raw.toString()) } catch { return }
 
@@ -141,16 +140,19 @@ export async function handleStream(twilioWs: WebSocket, req: IncomingMessage): P
         streamSid = start.streamSid as string
         callStartTime = Date.now()
         console.log('[stream] Twilio start, streamSid:', streamSid)
-        maybeGreet()
+        // Flush any audio that arrived before streamSid was known
+        for (const delta of audioBuffer) {
+          if (twilioWs.readyState === WebSocket.OPEN) {
+            twilioWs.send(JSON.stringify({ event: 'media', streamSid, media: { payload: delta } }))
+          }
+        }
+        audioBuffer = []
         break
       }
       case 'media': {
         if (openaiWs.readyState === WebSocket.OPEN) {
           const media = event.media as Record<string, string>
-          openaiWs.send(JSON.stringify({
-            type: 'input_audio_buffer.append',
-            audio: media.payload,
-          }))
+          openaiWs.send(JSON.stringify({ type: 'input_audio_buffer.append', audio: media.payload }))
         }
         break
       }
@@ -162,7 +164,12 @@ export async function handleStream(twilioWs: WebSocket, req: IncomingMessage): P
         break
       }
     }
-  })
+  }
+
+  // Swap buffering listener for real handler and replay buffered messages
+  twilioWs.removeListener('message', bufferTwilio)
+  twilioWs.on('message', handleTwilioMessage)
+  for (const raw of twilioBuffer) handleTwilioMessage(raw)
 
   twilioWs.on('close', () => {
     if (openaiWs.readyState === WebSocket.OPEN) openaiWs.close()
