@@ -81,6 +81,7 @@ export default async function DashboardPage({ params, searchParams }: Props) {
         initialBusinessName={operator.business_name ?? ''}
         initialGreeting={operator.greeting ?? ''}
         initialFaq={operator.faq ?? ''}
+        initialIntakeQuestions={operator.intake_questions ?? ''}
       />
 
       {allLeads.length > 0 && (

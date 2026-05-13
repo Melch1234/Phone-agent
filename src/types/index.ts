@@ -8,6 +8,7 @@ export interface Operator {
   greeting: string | null
   faq: string
   voice: string | null
+  intake_questions: string | null
   active: boolean
   plan: 'starter' | 'growth' | 'agency'
   dashboard_token: string

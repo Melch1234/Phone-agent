@@ -8,6 +8,7 @@ interface Props {
   initialBusinessName: string
   initialGreeting: string
   initialFaq: string
+  initialIntakeQuestions: string
 }
 
 const s = {
@@ -34,10 +35,11 @@ const s = {
   msg: (ok: boolean) => ({ fontSize: '.82rem', color: ok ? '#6fcf97' : '#ff6b6b', marginTop: 8 }),
 }
 
-export default function SettingsPanel({ operatorId, token, initialBusinessName, initialGreeting, initialFaq }: Props) {
+export default function SettingsPanel({ operatorId, token, initialBusinessName, initialGreeting, initialFaq, initialIntakeQuestions }: Props) {
   const [businessName, setBusinessName] = useState(initialBusinessName)
   const [greeting, setGreeting] = useState(initialGreeting)
   const [faq, setFaq] = useState(initialFaq)
+  const [intakeQuestions, setIntakeQuestions] = useState(initialIntakeQuestions)
   const [scrapeUrl, setScrapeUrl] = useState('')
   const [scraping, setScraping] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -71,7 +73,7 @@ export default function SettingsPanel({ operatorId, token, initialBusinessName, 
       const res = await fetch('/api/settings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ operatorId, token, faq, greeting, business_name: businessName }),
+        body: JSON.stringify({ operatorId, token, faq, greeting, business_name: businessName, intake_questions: intakeQuestions }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
@@ -96,6 +98,13 @@ export default function SettingsPanel({ operatorId, token, initialBusinessName, 
         <label style={s.label}>Opening greeting</label>
         <input style={s.input} value={greeting} onChange={e => setGreeting(e.target.value)}
           placeholder="Thanks for calling [Business]! How can I help?" />
+      </div>
+
+      <div style={{ marginBottom: '1rem' }}>
+        <label style={s.label}>Questions to ask every caller</label>
+        <textarea style={s.textarea} rows={5} value={intakeQuestions} onChange={e => setIntakeQuestions(e.target.value)}
+          placeholder={'Ask about their swimming ability\nAsk if they have any dietary restrictions\nAsk which hotel they are staying at\nAsk if they have rafted before'} />
+        <p style={{ fontSize: '.75rem', opacity: .35, marginTop: 4 }}>One question per line. The AI will weave these naturally into every call.</p>
       </div>
 
       <div style={{ marginBottom: '0.5rem' }}>
