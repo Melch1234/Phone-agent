@@ -27,8 +27,10 @@ Open every call with: "${greeting}"`
 }
 
 export async function handleStream(twilioWs: WebSocket, req: IncomingMessage): Promise<void> {
+  console.log('[stream] WebSocket connection received, url:', req.url)
   const url = new URL(req.url ?? '/', `http://localhost`)
   const operatorId = url.searchParams.get('operatorId')
+  console.log('[stream] operatorId:', operatorId)
 
   if (!operatorId) { twilioWs.close(); return }
 
