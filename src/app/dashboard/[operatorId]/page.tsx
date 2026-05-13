@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase'
 import { notFound, redirect } from 'next/navigation'
 import SettingsPanel from './SettingsPanel'
 import VoicePreview from './VoicePreview'
-import CallCard from './CallCard'
+import CallsList from './CallsList'
 
 interface Props {
   params: Promise<{ operatorId: string }>
@@ -63,10 +63,7 @@ export default async function DashboardPage({ params, searchParams }: Props) {
       </div>
 
       <h2 style={{ fontFamily: 'Fraunces, serif', fontSize: '1.3rem', fontWeight: 700, marginBottom: '1rem' }}>Recent calls</h2>
-      {allCalls.length === 0 && <p style={{ opacity: .4, marginBottom: '2rem' }}>No calls yet.</p>}
-      {allCalls.map((call: { id: string; caller_number: string; duration_seconds: number; summary: string; transcript: string; urgent: boolean; created_at: string }) => (
-        <CallCard key={call.id} call={call} operatorId={operator.id} token={operator.dashboard_token} />
-      ))}
+      <CallsList calls={allCalls} operatorId={operator.id} token={operator.dashboard_token} />
 
       <VoicePreview
         currentVoice={operator.voice ?? 'shimmer'}
