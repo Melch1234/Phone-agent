@@ -48,7 +48,7 @@ export async function handleStream(twilioWs: WebSocket, req: IncomingMessage): P
   })
 
   let streamSid: string | null = null
-  let callerNumber = 'unknown'
+  let callerNumber = url.searchParams.get('callerNumber') ?? 'unknown'
   let transcript = ''
   let urgent = false
   let callStartTime = Date.now()
