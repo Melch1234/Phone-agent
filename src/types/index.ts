@@ -7,6 +7,7 @@ export interface Operator {
   twilio_number: string | null
   greeting: string | null
   faq: string
+  voice: string | null
   active: boolean
   plan: 'starter' | 'growth' | 'agency'
   dashboard_token: string
