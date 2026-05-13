@@ -31,8 +31,11 @@ async function main() {
 
   const server = createServer(expressApp)
 
-  const wss = new WebSocketServer({ server, path: '/stream' })
-  wss.on('connection', handleStream)
+  const wss = new WebSocketServer({ server })
+  wss.on('connection', (ws, req) => {
+    console.log('[wss] WebSocket connection received:', req.url)
+    handleStream(ws, req)
+  })
 
   startBriefingCron()
 
