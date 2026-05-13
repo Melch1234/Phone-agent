@@ -2,6 +2,7 @@
   "name": "phone-agent",
   "version": "1.0.0",
   "description": "",
+  "engines": { "node": "20" },
   "main": "dist/server.js",
   "directories": {
     "doc": "docs"
