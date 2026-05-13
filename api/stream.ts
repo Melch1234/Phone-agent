@@ -125,8 +125,6 @@ export async function handleStream(twilioWs: WebSocket, req: IncomingMessage): P
       case 'start': {
         const start = event.start as Record<string, unknown>
         streamSid = start.streamSid as string
-        const params = start.customParameters as Record<string, string> | undefined
-        callerNumber = params?.callerNumber ?? 'unknown'
         callStartTime = Date.now()
         break
       }
