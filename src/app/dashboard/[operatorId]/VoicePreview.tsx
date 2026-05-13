@@ -3,6 +3,7 @@
 import { useState } from 'react'
 
 const VOICES = [
+  { id: 'pmpt_6a04fb388bc88190a5009264357ecc9104f1bbc2d66a539b', desc: 'Your custom voice' },
   { id: 'alloy', desc: 'Neutral, balanced' },
   { id: 'ash', desc: 'Clear, professional male' },
   { id: 'coral', desc: 'Friendly, upbeat female' },

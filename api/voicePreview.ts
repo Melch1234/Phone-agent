@@ -3,13 +3,16 @@ import OpenAI from 'openai'
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
-const REALTIME_VOICES = ['alloy', 'ash', 'ballad', 'coral', 'echo', 'sage', 'shimmer', 'verse'] as const
-type RealtimeVoice = typeof REALTIME_VOICES[number]
+const ALLOWED_VOICES = ['alloy', 'ash', 'coral', 'echo', 'sage', 'shimmer']
+
+function isAllowedVoice(v: string) {
+  return ALLOWED_VOICES.includes(v) || v.startsWith('pmpt_')
+}
 
 export async function handleVoicePreview(req: Request, res: Response): Promise<void> {
   const { voice, text } = req.query as { voice: string; text?: string }
 
-  if (!voice || !REALTIME_VOICES.includes(voice as RealtimeVoice)) {
+  if (!voice || !isAllowedVoice(voice)) {
     res.status(400).json({ error: 'Invalid voice' })
     return
   }
