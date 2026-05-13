@@ -58,6 +58,14 @@ export async function handleStream(twilioWs: WebSocket, req: IncomingMessage): P
   let transcript = ''
   let urgent = false
   let callStartTime = Date.now()
+  let sessionReady = false
+
+  function maybeGreet() {
+    if (sessionReady && streamSid) {
+      console.log('[stream] both ready, triggering greeting')
+      openaiWs.send(JSON.stringify({ type: 'response.create' }))
+    }
+  }
 
   openaiWs.on('open', () => {
     console.log('[stream] OpenAI WS connected, sending session config')
@@ -81,8 +89,9 @@ export async function handleStream(twilioWs: WebSocket, req: IncomingMessage): P
 
     switch (event.type) {
       case 'session.updated': {
-        console.log('[stream] session ready, triggering greeting')
-        openaiWs.send(JSON.stringify({ type: 'response.create' }))
+        console.log('[stream] session ready')
+        sessionReady = true
+        maybeGreet()
         break
       }
       case 'response.audio.delta': {
@@ -131,6 +140,8 @@ export async function handleStream(twilioWs: WebSocket, req: IncomingMessage): P
         const start = event.start as Record<string, unknown>
         streamSid = start.streamSid as string
         callStartTime = Date.now()
+        console.log('[stream] Twilio start, streamSid:', streamSid)
+        maybeGreet()
         break
       }
       case 'media': {
