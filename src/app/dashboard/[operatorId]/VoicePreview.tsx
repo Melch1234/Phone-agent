@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 const VOICES = [
-  { id: 'pmpt_6a04fb388bc88190a5009264357ecc9104f1bbc2d66a539b', desc: 'Your custom voice' },
+  { id: 'pmpt_6a04fb388bc88190a5009264357ecc9104f1bbc2d66a539b', desc: 'Custom voice', label: 'Alicia' },
   { id: 'alloy', desc: 'Neutral, balanced' },
   { id: 'ash', desc: 'Clear, professional male' },
   { id: 'coral', desc: 'Friendly, upbeat female' },
@@ -11,6 +11,12 @@ const VOICES = [
   { id: 'sage', desc: 'Calm, authoritative' },
   { id: 'shimmer', desc: 'Warm, natural female' },
 ]
+
+interface Voice {
+  id: string
+  desc: string
+  label?: string
+}
 
 interface Props {
   currentVoice: string
@@ -35,17 +41,17 @@ export default function VoicePreview({ currentVoice, greeting, operatorId, token
     await audio.play().catch(() => setPlaying(null))
   }
 
-  async function selectVoice(voice: string) {
-    setSelecting(voice)
+  async function selectVoice(v: Voice) {
+    setSelecting(v.id)
     setMsg(null)
     const res = await fetch('/api/settings', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ operatorId, token, voice }),
+      body: JSON.stringify({ operatorId, token, voice: v.id }),
     })
     if (res.ok) {
-      setSelected(voice)
-      setMsg(`Voice set to ${voice}`)
+      setSelected(v.id)
+      setMsg(`Voice set to ${v.label ?? v.id}`)
     } else {
       setMsg('Failed to save')
     }
@@ -72,7 +78,7 @@ export default function VoicePreview({ currentVoice, greeting, operatorId, token
               display: 'flex', flexDirection: 'column', gap: '0.6rem',
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontWeight: 600, textTransform: 'capitalize' }}>{v.id}</span>
+                <span style={{ fontWeight: 600, textTransform: 'capitalize' }}>{v.label ?? v.id}</span>
                 {isCurrent && <span style={{ fontSize: '.7rem', color: '#f5a82a', fontWeight: 600 }}>ACTIVE</span>}
               </div>
               <span style={{ fontSize: '.8rem', opacity: .5 }}>{v.desc}</span>
@@ -84,7 +90,7 @@ export default function VoicePreview({ currentVoice, greeting, operatorId, token
                   {isPlaying ? '▶ Playing…' : '▶ Preview'}
                 </button>
                 {!isCurrent && (
-                  <button onClick={() => selectVoice(v.id)} disabled={!!selecting} style={{
+                  <button onClick={() => selectVoice(v)} disabled={!!selecting} style={{
                     flex: 1, padding: '0.5rem', borderRadius: 8, border: 'none',
                     background: '#f5a82a', color: '#040d1f', cursor: 'pointer',
                     fontWeight: 600, fontSize: '.82rem',
