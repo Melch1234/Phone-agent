@@ -67,16 +67,18 @@ export async function handleScrape(req: Request, res: Response): Promise<void> {
     return
   }
 
+  const normalizedUrl = url.startsWith('http') ? url : `https://${url}`
+
   let mainHtml: string
   try {
-    mainHtml = await fetchText(url)
+    mainHtml = await fetchText(normalizedUrl)
   } catch (err) {
     res.status(400).json({ error: `Could not fetch URL: ${err instanceof Error ? err.message : 'Unknown error'}` })
     return
   }
 
   // Scrape additional relevant pages in parallel
-  const extraLinks = extractInternalLinks(mainHtml, url)
+  const extraLinks = extractInternalLinks(mainHtml, normalizedUrl)
   const extraTexts = await Promise.allSettled(extraLinks.map(fetchText))
 
   const allText = [mainHtml, ...extraTexts.map(r => r.status === 'fulfilled' ? r.value : '')]
