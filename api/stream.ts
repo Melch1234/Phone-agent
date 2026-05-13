@@ -7,7 +7,7 @@ import { summariseCall } from '../src/lib/openai'
 import type { Operator } from '../src/types'
 
 const OPENAI_REALTIME_URL =
-  'wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-10-01'
+  'wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview'
 
 function buildSystemPrompt(op: Operator): string {
   const greeting = op.greeting
@@ -54,6 +54,7 @@ export async function handleStream(twilioWs: WebSocket, req: IncomingMessage): P
   let callStartTime = Date.now()
 
   openaiWs.on('open', () => {
+    console.log('[stream] OpenAI WS connected, sending session config')
     openaiWs.send(JSON.stringify({
       type: 'session.update',
       session: {
@@ -106,7 +107,8 @@ export async function handleStream(twilioWs: WebSocket, req: IncomingMessage): P
   })
 
   openaiWs.on('error', (err) => {
-    console.error('OpenAI WS error:', err.message)
+    console.error('[stream] OpenAI WS error:', err.message)
+    if (twilioWs.readyState === WebSocket.OPEN) twilioWs.close()
   })
 
   twilioWs.on('message', (raw: Buffer) => {
