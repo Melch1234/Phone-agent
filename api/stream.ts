@@ -80,6 +80,11 @@ export async function handleStream(twilioWs: WebSocket, req: IncomingMessage): P
     try { event = JSON.parse(raw.toString()) } catch { return }
 
     switch (event.type) {
+      case 'session.updated': {
+        console.log('[stream] session ready, triggering greeting')
+        openaiWs.send(JSON.stringify({ type: 'response.create' }))
+        break
+      }
       case 'response.audio.delta': {
         const delta = event.delta as string | undefined
         if (streamSid && delta && twilioWs.readyState === WebSocket.OPEN) {
