@@ -6,7 +6,7 @@ const operator: Operator = {
   id: 'op-1', business_name: 'Blue Ridge Adventures', owner_name: 'Mike',
   email: 'mike@blueridge.com', alert_phone: '+16045550100',
   twilio_number: '+16045550200', greeting: null, faq: '',
-  active: true, plan: 'starter', dashboard_token: 'token-abc', created_at: ''
+  active: true, plan: 'starter', dashboard_token: 'token-abc', created_at: '', voice: null
 }
 
 const calls: Call[] = [

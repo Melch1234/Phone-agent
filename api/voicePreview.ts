@@ -21,7 +21,7 @@ export async function handleVoicePreview(req: Request, res: Response): Promise<v
 
   const mp3 = await openai.audio.speech.create({
     model: 'tts-1',
-    voice: voice as RealtimeVoice,
+    voice: voice as 'alloy' | 'ash' | 'coral' | 'echo' | 'sage' | 'shimmer',
     input: sample,
   })
 
