@@ -2,12 +2,13 @@ import { Request, Response } from 'express'
 import { supabase } from '../src/lib/supabase'
 
 export async function handleSettings(req: Request, res: Response): Promise<void> {
-  const { operatorId, token, faq, greeting, business_name } = req.body as {
+  const { operatorId, token, faq, greeting, business_name, voice } = req.body as {
     operatorId: string
     token: string
-    faq: string
+    faq?: string
     greeting?: string
     business_name?: string
+    voice?: string
   }
 
   if (!operatorId || !token) {
@@ -26,9 +27,15 @@ export async function handleSettings(req: Request, res: Response): Promise<void>
     return
   }
 
+  const updates: Record<string, unknown> = {}
+  if (faq !== undefined) updates.faq = faq
+  if (greeting !== undefined) updates.greeting = greeting || null
+  if (business_name !== undefined) updates.business_name = business_name || null
+  if (voice !== undefined) updates.voice = voice || null
+
   const { error } = await supabase
     .from('operators')
-    .update({ faq: faq ?? '', greeting: greeting || null, business_name: business_name || null })
+    .update(updates)
     .eq('id', operatorId)
 
   if (error) {

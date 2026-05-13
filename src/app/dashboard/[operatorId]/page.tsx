@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic'
 import { supabase } from '@/lib/supabase'
 import { notFound, redirect } from 'next/navigation'
 import SettingsPanel from './SettingsPanel'
+import VoicePreview from './VoicePreview'
 
 interface Props {
   params: Promise<{ operatorId: string }>
@@ -78,6 +79,13 @@ export default async function DashboardPage({ params, searchParams }: Props) {
           </div>
         )
       })}
+
+      <VoicePreview
+        currentVoice={operator.voice ?? 'shimmer'}
+        greeting={operator.greeting ?? ''}
+        operatorId={operator.id}
+        token={operator.dashboard_token}
+      />
 
       <SettingsPanel
         operatorId={operator.id}
