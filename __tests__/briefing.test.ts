@@ -14,7 +14,7 @@ const calls: Call[] = [
     id: 'call-1', operator_id: 'op-1', caller_number: '+16045550192',
     duration_seconds: 240, transcript: '', urgent: false,
     summary: 'Sarah asked about the 3-day hike for a party of 4 on July 12.',
-    leads: [{ name: 'Sarah', party_size: 4, tour_date: 'July 12', notes: 'vegetarian in group' }],
+    leads: [{ name: 'Sarah', party_size: 4, tour_date: 'July 12', trip_type: null, phone_number: null, callback_time: null, accommodation: null, notes: 'vegetarian in group' }],
     created_at: new Date().toISOString()
   },
   {

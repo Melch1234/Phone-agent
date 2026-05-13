@@ -90,17 +90,21 @@ export default async function DashboardPage({ params, searchParams }: Props) {
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '.88rem' }}>
               <thead>
                 <tr style={{ opacity: .45, borderBottom: '1px solid rgba(255,255,255,.1)' }}>
-                  {['Name', 'Party size', 'Tour date', 'Notes'].map(h => (
-                    <th key={h} style={{ textAlign: 'left', padding: '8px 12px', fontWeight: 500 }}>{h}</th>
+                  {['Name', 'Phone', 'Party', 'Date', 'Trip type', 'Callback time', 'Staying', 'Notes'].map(h => (
+                    <th key={h} style={{ textAlign: 'left', padding: '8px 12px', fontWeight: 500, whiteSpace: 'nowrap' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {allLeads.map((lead: { id: string; name: string; party_size: number; tour_date: string; notes: string }) => (
+                {allLeads.map((lead: { id: string; name: string; phone_number: string; party_size: number; tour_date: string; trip_type: string; callback_time: string; accommodation: string; notes: string }) => (
                   <tr key={lead.id} style={{ borderBottom: '1px solid rgba(255,255,255,.05)' }}>
                     <td style={{ padding: '10px 12px' }}>{lead.name || '—'}</td>
+                    <td style={{ padding: '10px 12px' }}>{lead.phone_number || '—'}</td>
                     <td style={{ padding: '10px 12px' }}>{lead.party_size ?? '—'}</td>
                     <td style={{ padding: '10px 12px' }}>{lead.tour_date || '—'}</td>
+                    <td style={{ padding: '10px 12px' }}>{lead.trip_type || '—'}</td>
+                    <td style={{ padding: '10px 12px' }}>{lead.callback_time || '—'}</td>
+                    <td style={{ padding: '10px 12px' }}>{lead.accommodation || '—'}</td>
                     <td style={{ padding: '10px 12px', opacity: .6 }}>{lead.notes || '—'}</td>
                   </tr>
                 ))}

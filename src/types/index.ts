@@ -15,9 +15,13 @@ export interface Operator {
 }
 
 export interface Lead {
-  name: string
+  name: string | null
   party_size: number | null
   tour_date: string | null
+  trip_type: string | null
+  phone_number: string | null
+  callback_time: string | null
+  accommodation: string | null
   notes: string | null
 }
 
