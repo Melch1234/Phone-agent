@@ -3,7 +3,6 @@
 import { useState } from 'react'
 
 const VOICES = [
-  { id: 'pmpt_6a04fb388bc88190a5009264357ecc9104f1bbc2d66a539b', desc: 'Custom voice', label: 'Alicia' },
   { id: 'alloy', desc: 'Neutral, balanced' },
   { id: 'ash', desc: 'Clear, professional male' },
   { id: 'coral', desc: 'Friendly, upbeat female' },
@@ -11,12 +10,6 @@ const VOICES = [
   { id: 'sage', desc: 'Calm, authoritative' },
   { id: 'shimmer', desc: 'Warm, natural female' },
 ]
-
-interface Voice {
-  id: string
-  desc: string
-  label?: string
-}
 
 interface Props {
   currentVoice: string
@@ -41,7 +34,7 @@ export default function VoicePreview({ currentVoice, greeting, operatorId, token
     await audio.play().catch(() => setPlaying(null))
   }
 
-  async function selectVoice(v: Voice) {
+  async function selectVoice(v: { id: string; desc: string }) {
     setSelecting(v.id)
     setMsg(null)
     const res = await fetch('/api/settings', {
@@ -51,7 +44,7 @@ export default function VoicePreview({ currentVoice, greeting, operatorId, token
     })
     if (res.ok) {
       setSelected(v.id)
-      setMsg(`Voice set to ${v.label ?? v.id}`)
+      setMsg(`Voice set to ${v.id}`)
     } else {
       setMsg('Failed to save')
     }
@@ -78,7 +71,7 @@ export default function VoicePreview({ currentVoice, greeting, operatorId, token
               display: 'flex', flexDirection: 'column', gap: '0.6rem',
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontWeight: 600, textTransform: 'capitalize' }}>{v.label ?? v.id}</span>
+                <span style={{ fontWeight: 600, textTransform: 'capitalize' }}>{v.id}</span>
                 {isCurrent && <span style={{ fontSize: '.7rem', color: '#f5a82a', fontWeight: 600 }}>ACTIVE</span>}
               </div>
               <span style={{ fontSize: '.8rem', opacity: .5 }}>{v.desc}</span>

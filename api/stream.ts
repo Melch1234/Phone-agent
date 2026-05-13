@@ -83,7 +83,7 @@ export async function handleStream(twilioWs: WebSocket, req: IncomingMessage): P
         turn_detection: { type: 'server_vad' },
         input_audio_format: 'g711_ulaw',
         output_audio_format: 'g711_ulaw',
-        voice: (operator.voice || 'shimmer') as string,
+        voice: (operator.voice?.startsWith('pmpt_') ? 'shimmer' : operator.voice || 'shimmer') as string,
         instructions: buildSystemPrompt(operator),
         modalities: ['text', 'audio'],
         temperature: 0.8,
