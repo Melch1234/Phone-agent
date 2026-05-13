@@ -4,6 +4,7 @@ import { supabase } from '@/lib/supabase'
 import { notFound, redirect } from 'next/navigation'
 import SettingsPanel from './SettingsPanel'
 import VoicePreview from './VoicePreview'
+import CallCard from './CallCard'
 
 interface Props {
   params: Promise<{ operatorId: string }>
@@ -63,22 +64,9 @@ export default async function DashboardPage({ params, searchParams }: Props) {
 
       <h2 style={{ fontFamily: 'Fraunces, serif', fontSize: '1.3rem', fontWeight: 700, marginBottom: '1rem' }}>Recent calls</h2>
       {allCalls.length === 0 && <p style={{ opacity: .4, marginBottom: '2rem' }}>No calls yet.</p>}
-      {allCalls.map((call: { id: string; caller_number: string; duration_seconds: number; summary: string; urgent: boolean; created_at: string }) => {
-        const mins = Math.floor(call.duration_seconds / 60)
-        const secs = call.duration_seconds % 60
-        return (
-          <div key={call.id} style={{ background: 'rgba(255,255,255,.04)', border: `1px solid ${call.urgent ? 'rgba(255,107,107,.35)' : 'rgba(255,255,255,.07)'}`, borderRadius: 12, padding: '1.25rem', marginBottom: '0.75rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-              <span style={{ fontWeight: 500 }}>{call.caller_number}</span>
-              <span style={{ opacity: .45, fontSize: '.82rem' }}>
-                {mins}:{secs.toString().padStart(2, '0')} · {new Date(call.created_at).toLocaleDateString()}
-                {call.urgent && ' · ⚠️ URGENT'}
-              </span>
-            </div>
-            <p style={{ opacity: .7, fontSize: '.88rem', lineHeight: 1.55 }}>{call.summary || 'No summary.'}</p>
-          </div>
-        )
-      })}
+      {allCalls.map((call: { id: string; caller_number: string; duration_seconds: number; summary: string; transcript: string; urgent: boolean; created_at: string }) => (
+        <CallCard key={call.id} call={call} />
+      ))}
 
       <VoicePreview
         currentVoice={operator.voice ?? 'shimmer'}
