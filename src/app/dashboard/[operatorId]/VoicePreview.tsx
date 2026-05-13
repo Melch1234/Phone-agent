@@ -5,12 +5,10 @@ import { useState } from 'react'
 const VOICES = [
   { id: 'alloy', desc: 'Neutral, balanced' },
   { id: 'ash', desc: 'Clear, professional male' },
-  { id: 'ballad', desc: 'Warm, expressive male' },
   { id: 'coral', desc: 'Friendly, upbeat female' },
   { id: 'echo', desc: 'Confident male' },
   { id: 'sage', desc: 'Calm, authoritative' },
   { id: 'shimmer', desc: 'Warm, natural female' },
-  { id: 'verse', desc: 'Energetic, clear' },
 ]
 
 interface Props {
