@@ -12,6 +12,7 @@ import { handleSettings } from './api/settings'
 import { handleVoicePreview } from './api/voicePreview'
 import { handleStream } from './api/stream'
 import { handleAdminOperators } from './api/admin'
+import { handleContact } from './api/contact'
 import { startBriefingCron } from './src/lib/briefing'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -34,6 +35,7 @@ async function main() {
   expressApp.get('/api/voice-preview', handleVoicePreview)
   expressApp.get('/api/admin/operators', handleAdminOperators)
   expressApp.patch('/api/admin/operators', handleAdminOperators)
+  expressApp.post('/api/contact', handleContact)
 
   expressApp.all('/{*splat}', (req, res) => {
     const parsedUrl = parse(req.url!, true)

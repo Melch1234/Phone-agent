@@ -56,12 +56,29 @@ const TIERS = [
 
 export default function LandingV2() {
   const [scrolled, setScrolled] = useState(false)
+  const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' })
+  const [contactState, setContactState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  async function submitContact(e: React.FormEvent) {
+    e.preventDefault()
+    setContactState('sending')
+    try {
+      const r = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(contactForm),
+      })
+      setContactState(r.ok ? 'sent' : 'error')
+    } catch {
+      setContactState('error')
+    }
+  }
 
   return (
     <div className="v2">
@@ -310,6 +327,74 @@ export default function LandingV2() {
         </div>
       </section>
 
+      {/* ── CONTACT ── */}
+      <section id="v2-contact" className="v2-section v2-section--alt">
+        <div className="v2-container" style={{ maxWidth: 640 }}>
+          <span className="v2-eyebrow">Get in touch</span>
+          <h2 className="v2-display-md" style={{ marginTop: 20, marginBottom: 12 }}>
+            Questions? We&apos;d love<br />to hear from you.
+          </h2>
+          <p className="v2-lead" style={{ marginBottom: 36, color: 'var(--v2-ink-700)' }}>
+            Not ready to sign up yet, or want to chat about a custom setup? Drop us a message.
+          </p>
+          {contactState === 'sent' ? (
+            <div style={{ background: 'rgba(111,207,151,.1)', border: '1px solid rgba(111,207,151,.3)', borderRadius: 12, padding: '2rem', textAlign: 'center' }}>
+              <div style={{ fontSize: '2rem', marginBottom: 8 }}>✓</div>
+              <p style={{ fontWeight: 600, marginBottom: 4 }}>Message sent!</p>
+              <p style={{ opacity: .6, fontSize: '.9rem' }}>We&apos;ll get back to you shortly.</p>
+            </div>
+          ) : (
+            <form onSubmit={submitContact} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '.82rem', opacity: .6, marginBottom: 6 }}>Name</label>
+                  <input
+                    required
+                    value={contactForm.name}
+                    onChange={e => setContactForm(p => ({ ...p, name: e.target.value }))}
+                    placeholder="Jane Smith"
+                    style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid var(--v2-ink-200)', fontSize: '.9rem', background: '#fff', boxSizing: 'border-box' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '.82rem', opacity: .6, marginBottom: 6 }}>Email</label>
+                  <input
+                    required
+                    type="email"
+                    value={contactForm.email}
+                    onChange={e => setContactForm(p => ({ ...p, email: e.target.value }))}
+                    placeholder="jane@raftingco.com"
+                    style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid var(--v2-ink-200)', fontSize: '.9rem', background: '#fff', boxSizing: 'border-box' }}
+                  />
+                </div>
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '.82rem', opacity: .6, marginBottom: 6 }}>Message</label>
+                <textarea
+                  required
+                  rows={5}
+                  value={contactForm.message}
+                  onChange={e => setContactForm(p => ({ ...p, message: e.target.value }))}
+                  placeholder="Tell us about your business and what you need..."
+                  style={{ width: '100%', padding: '10px 14px', borderRadius: 8, border: '1px solid var(--v2-ink-200)', fontSize: '.9rem', background: '#fff', resize: 'vertical', boxSizing: 'border-box' }}
+                />
+              </div>
+              {contactState === 'error' && (
+                <p style={{ color: '#e55', fontSize: '.85rem' }}>Something went wrong — try emailing us directly at fun@bugme.travel</p>
+              )}
+              <button
+                type="submit"
+                disabled={contactState === 'sending'}
+                className="v2-btn v2-btn--primary"
+                style={{ alignSelf: 'flex-start' }}
+              >
+                {contactState === 'sending' ? 'Sending…' : 'Send message'}
+              </button>
+            </form>
+          )}
+        </div>
+      </section>
+
       {/* ── FOOTER ── */}
       <footer className="v2-footer">
         <div className="v2-container v2-footer-grid">
@@ -321,6 +406,22 @@ export default function LandingV2() {
             <p className="v2-footer-tagline">
               The after-hours phone agent for tourism. Made for operators who&apos;d rather be out on the water.
             </p>
+            <div style={{ marginTop: 20 }}>
+              <a
+                href="https://bugme.travel"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 8,
+                  background: 'rgba(255,255,255,.06)', border: '1px solid rgba(255,255,255,.12)',
+                  borderRadius: 8, padding: '7px 12px', textDecoration: 'none',
+                  color: 'var(--v2-fg-on-dark-mut)', fontSize: '.78rem',
+                }}
+              >
+                <span style={{ opacity: .5 }}>In partnership with</span>
+                <span style={{ fontWeight: 700, color: '#fff' }}>BUGMe.travel</span>
+              </a>
+            </div>
           </div>
           {[
             { title: 'Product', links: ['How it works', 'Features', 'Pricing', 'Onboarding'] },
