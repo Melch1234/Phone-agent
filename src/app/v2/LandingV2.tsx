@@ -24,7 +24,7 @@ const FEATURES = [
   { title: 'Answers your FAQs', body: 'Trained on tours, prices, meeting points, cancellation policy — your own playbook.', icon: <ChatIcon /> },
   { title: 'Captures every enquiry', body: 'Name, number, party size, dates, intent. Cleanly structured, never lost.', icon: <ClipboardIcon /> },
   { title: 'Works on any phone', body: 'Landlines, mobiles, VoIP. Forward your existing number — no porting required.', icon: <PhoneIcon /> },
-  { title: 'Morning email summary', body: 'Every overnight call, structured by priority. In your inbox at 7am with coffee.', icon: <MailIcon /> },
+  { title: 'Team dashboard', body: 'Every call logged and searchable. Your whole team sees who called, what they wanted, and what to follow up — no inbox required.', icon: <MailIcon /> },
 ]
 
 const WHO = [
