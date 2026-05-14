@@ -180,7 +180,7 @@ export default function LandingV2() {
             <div className="v2-stats-row">
               {[
                 { n: '40%', label: 'of tourism calls go to voicemail' },
-                { n: '£280', label: 'average lost booking value' },
+                { n: '$280', label: 'average lost booking value' },
                 { n: '11pm', label: 'peak after-hours enquiry time' },
               ].map(s => (
                 <div key={s.n} className="v2-stat-block">
