@@ -36,19 +36,32 @@ const WHO = [
 
 const TIERS = [
   {
-    name: 'Starter', price: 97, blurb: 'For solo operators dipping in.',
-    features: ['1 phone number', 'Up to 200 calls/mo', 'Daily email summary', 'Email support'],
+    name: 'Starter', price: 199, blurb: 'For solo operators.',
+    features: ['1 phone line', '300 min/mo included', 'AI trained on your FAQ', 'Team dashboard', 'Email support'],
     recommended: false,
+    cta: 'Get started',
+    href: '/onboard',
   },
   {
-    name: 'Growth', price: 197, blurb: 'Most tourism businesses pick this.',
-    features: ['3 phone numbers', 'Unlimited calls', 'Daily email summary', 'Custom FAQ training', 'Priority support'],
+    name: 'Growth', price: 349, blurb: 'Most tourism businesses pick this.',
+    features: ['3 phone lines', '1,000 min/mo included', 'AI trained on your FAQ', 'Team dashboard', 'Priority support'],
     recommended: true,
+    cta: 'Get started',
+    href: '/onboard',
   },
   {
-    name: 'Agency', price: 397, blurb: 'For multi-brand operators.',
-    features: ['10 phone numbers', 'Unlimited calls', 'White-label summaries', 'Per-brand FAQ training', 'API access', 'Dedicated success manager'],
+    name: 'Agency', price: 599, blurb: 'For multi-brand operators.',
+    features: ['10 phone lines', 'Unlimited minutes', 'Per-brand FAQ training', 'Team dashboard', 'Dedicated support'],
     recommended: false,
+    cta: 'Get started',
+    href: '/onboard',
+  },
+  {
+    name: 'Custom', price: null, blurb: 'Weekends only, seasonal, or something else entirely.',
+    features: ['Any number of lines', 'Tailored minute allowance', 'Custom hours & schedule', 'Multi-location setups', 'Let\'s figure it out together'],
+    recommended: false,
+    cta: 'Get in touch',
+    href: '#v2-contact',
   },
 ]
 
@@ -281,8 +294,11 @@ export default function LandingV2() {
                 {t.recommended && <div className="v2-tier-badge">Most popular</div>}
                 <div className="v2-tier-name">{t.name}</div>
                 <div className="v2-tier-price">
-                  <span className="v2-tier-amt">${t.price}</span>
-                  <span className="v2-tier-per">/mo</span>
+                  {t.price ? (
+                    <><span className="v2-tier-amt">${t.price}</span><span className="v2-tier-per">/mo</span></>
+                  ) : (
+                    <span className="v2-tier-amt" style={{ fontSize: '1.6rem' }}>Let&apos;s talk</span>
+                  )}
                 </div>
                 <p className="v2-tier-blurb">{t.blurb}</p>
                 <div className="v2-tier-divider" />
@@ -295,10 +311,12 @@ export default function LandingV2() {
                   ))}
                 </ul>
                 <a
-                  href="/onboard" target="_blank" rel="noopener noreferrer"
+                  href={t.href}
+                  target={t.href.startsWith('#') ? undefined : '_blank'}
+                  rel={t.href.startsWith('#') ? undefined : 'noopener noreferrer'}
                   className={`v2-btn ${t.recommended ? 'v2-btn--primary' : 'v2-btn--outline-ink'} v2-tier-cta`}
                 >
-                  Start with {t.name}
+                  {t.cta}
                 </a>
               </div>
             ))}
