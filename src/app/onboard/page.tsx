@@ -2,17 +2,14 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-type Step = 1 | 2 | 3 | 4 | 5
-
 interface FormData {
   business_name: string
   owner_name: string
-  tour_types: string[]
-  location: string
-  faq: string
   email: string
   alert_phone: string
-  greeting: string
+  location: string
+  tour_types: string[]
+  call_slots: string[]
 }
 
 const TOUR_TYPES = [
@@ -21,9 +18,25 @@ const TOUR_TYPES = [
   'Cultural & City Tours', 'Other',
 ]
 
+const TIME_SLOTS = ['9:00am', '10:00am', '11:00am', '1:00pm', '2:00pm', '3:00pm', '4:00pm', '5:00pm']
+
+function getNextWeekdays(count: number): string[] {
+  const days: string[] = []
+  const d = new Date()
+  d.setDate(d.getDate() + 1)
+  while (days.length < count) {
+    const dow = d.getDay()
+    if (dow !== 0 && dow !== 6) {
+      days.push(d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }))
+    }
+    d.setDate(d.getDate() + 1)
+  }
+  return days
+}
+
 const INITIAL: FormData = {
-  business_name: '', owner_name: '', tour_types: [], location: '',
-  faq: '', email: '', alert_phone: '', greeting: '',
+  business_name: '', owner_name: '', email: '', alert_phone: '',
+  location: '', tour_types: [], call_slots: [],
 }
 
 const inputStyle: React.CSSProperties = {
@@ -45,24 +58,31 @@ const btnGhost: React.CSSProperties = {
   border: '1px solid rgba(255,255,255,.2)', padding: '12px 24px',
   borderRadius: 50, cursor: 'pointer', fontSize: '1rem',
 }
+const chipStyle = (active: boolean): React.CSSProperties => ({
+  padding: '6px 14px', borderRadius: 50, border: '1px solid',
+  borderColor: active ? '#e8820c' : 'rgba(255,255,255,.2)',
+  background: active ? 'rgba(232,130,12,.15)' : 'transparent',
+  color: active ? '#e8820c' : 'rgba(240,232,216,.7)',
+  cursor: 'pointer', fontSize: '.82rem',
+})
 
 export default function OnboardPage() {
-  const [step, setStep] = useState<Step>(1)
+  const [step, setStep] = useState(1)
   const [form, setForm] = useState<FormData>(INITIAL)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
+  const weekdays = getNextWeekdays(10)
 
   const set = (field: keyof FormData, value: string | string[]) =>
     setForm(prev => ({ ...prev, [field]: value }))
 
-  const toggleTourType = (type: string) =>
-    set('tour_types', form.tour_types.includes(type)
-      ? form.tour_types.filter(t => t !== type)
-      : [...form.tour_types, type])
+  const toggleItem = (field: 'tour_types' | 'call_slots', val: string) =>
+    set(field, form[field].includes(val)
+      ? form[field].filter(v => v !== val)
+      : [...form[field], val])
 
-  const next = () => setStep(s => (s + 1) as Step)
-  const back = () => setStep(s => (s - 1) as Step)
+  const step1Valid = form.business_name && form.owner_name && form.email && form.alert_phone
 
   const submit = async () => {
     setSubmitting(true)
@@ -82,18 +102,17 @@ export default function OnboardPage() {
     }
   }
 
-  const wrapStyle: React.CSSProperties = {
-    minHeight: '100vh', background: '#040d1f', display: 'flex',
-    alignItems: 'center', justifyContent: 'center', padding: '2rem',
-    fontFamily: 'Outfit, system-ui, sans-serif', color: '#f0e8d8',
-  }
-
   return (
-    <main style={wrapStyle}>
+    <main style={{
+      minHeight: '100vh', background: '#040d1f', display: 'flex',
+      alignItems: 'center', justifyContent: 'center', padding: '2rem',
+      fontFamily: 'Outfit, system-ui, sans-serif', color: '#f0e8d8',
+    }}>
       <div style={{ maxWidth: 560, width: '100%' }}>
-        {/* Progress bar */}
+
+        {/* Progress */}
         <div style={{ display: 'flex', gap: 6, marginBottom: '2.5rem' }}>
-          {([1,2,3,4,5] as Step[]).map(n => (
+          {[1, 2, 3].map(n => (
             <div key={n} style={{
               flex: 1, height: 4, borderRadius: 2,
               background: n <= step ? '#e8820c' : 'rgba(255,255,255,.12)',
@@ -102,108 +121,124 @@ export default function OnboardPage() {
           ))}
         </div>
 
+        {/* Step 1 — Business info */}
         {step === 1 && (
           <div>
-            <h1 style={{ fontFamily: 'Fraunces, serif', fontSize: '2rem', fontWeight: 800, marginBottom: '.5rem' }}>Tell us about your business</h1>
-            <p style={{ opacity: .6, marginBottom: '2rem' }}>We&apos;ll use this to personalise your agent.</p>
+            <h1 style={{ fontFamily: 'Fraunces, serif', fontSize: '2rem', fontWeight: 800, marginBottom: '.5rem' }}>
+              Tell us about your business
+            </h1>
+            <p style={{ opacity: .6, marginBottom: '2rem' }}>
+              We&apos;ll review your application and be in touch.
+            </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
               <div>
                 <label style={labelStyle}>Business name *</label>
-                <input style={inputStyle} value={form.business_name} onChange={e => set('business_name', e.target.value)} placeholder="Blue Ridge Adventures" />
+                <input style={inputStyle} value={form.business_name}
+                  onChange={e => set('business_name', e.target.value)} placeholder="Blue Ridge Adventures" />
               </div>
               <div>
                 <label style={labelStyle}>Your name *</label>
-                <input style={inputStyle} value={form.owner_name} onChange={e => set('owner_name', e.target.value)} placeholder="Mike Johnson" />
+                <input style={inputStyle} value={form.owner_name}
+                  onChange={e => set('owner_name', e.target.value)} placeholder="Mike Johnson" />
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div>
+                  <label style={labelStyle}>Email *</label>
+                  <input style={inputStyle} type="email" value={form.email}
+                    onChange={e => set('email', e.target.value)} placeholder="mike@blueridge.com" />
+                </div>
+                <div>
+                  <label style={labelStyle}>Phone *</label>
+                  <input style={inputStyle} type="tel" value={form.alert_phone}
+                    onChange={e => set('alert_phone', e.target.value)} placeholder="+1 604 555 0100" />
+                </div>
               </div>
               <div>
                 <label style={labelStyle}>Location</label>
-                <input style={inputStyle} value={form.location} onChange={e => set('location', e.target.value)} placeholder="Banff, Alberta" />
+                <input style={inputStyle} value={form.location}
+                  onChange={e => set('location', e.target.value)} placeholder="Banff, Alberta" />
               </div>
               <div>
                 <label style={labelStyle}>Type of tours (select all that apply)</label>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 4 }}>
                   {TOUR_TYPES.map(type => (
-                    <button key={type} type="button" onClick={() => toggleTourType(type)} style={{
-                      padding: '6px 14px', borderRadius: 50, border: '1px solid',
-                      borderColor: form.tour_types.includes(type) ? '#e8820c' : 'rgba(255,255,255,.2)',
-                      background: form.tour_types.includes(type) ? 'rgba(232,130,12,.15)' : 'transparent',
-                      color: form.tour_types.includes(type) ? '#e8820c' : 'rgba(240,232,216,.7)',
-                      cursor: 'pointer', fontSize: '.82rem',
-                    }}>{type}</button>
+                    <button key={type} type="button" onClick={() => toggleItem('tour_types', type)}
+                      style={chipStyle(form.tour_types.includes(type))}>
+                      {type}
+                    </button>
                   ))}
                 </div>
               </div>
             </div>
             <div style={{ marginTop: '2rem' }}>
-              <button type="button" onClick={next} disabled={!form.business_name || !form.owner_name} style={btnPrimary(!form.business_name || !form.owner_name)}>Continue →</button>
+              <button type="button" onClick={() => setStep(2)}
+                disabled={!step1Valid} style={btnPrimary(!step1Valid)}>
+                Continue →
+              </button>
             </div>
           </div>
         )}
 
+        {/* Step 2 — Book a call (optional) */}
         {step === 2 && (
           <div>
-            <h1 style={{ fontFamily: 'Fraunces, serif', fontSize: '2rem', fontWeight: 800, marginBottom: '.5rem' }}>Your tours &amp; FAQ</h1>
-            <p style={{ opacity: .6, marginBottom: '2rem' }}>Paste everything your agent needs to know — tour names, prices, meeting points, what to bring, cancellation policy.</p>
-            <textarea style={{ ...inputStyle, minHeight: 240, resize: 'vertical' }} value={form.faq} onChange={e => set('faq', e.target.value)}
-              placeholder={`3-Day Banff Hike — $299 per person\nMeeting point: Banff visitor centre, 7:30am\nDifficulty: Moderate. Bring layers, good boots, lunch.\nMax group size: 12. Min age: 16.\nCancellation: Full refund 48+ hours before.`} />
+            <h1 style={{ fontFamily: 'Fraunces, serif', fontSize: '2rem', fontWeight: 800, marginBottom: '.5rem' }}>
+              Book a call with us
+            </h1>
+            <p style={{ opacity: .6, marginBottom: '.5rem' }}>
+              Optional — pick a few times that work and we&apos;ll confirm one with you.
+            </p>
+            <p style={{ opacity: .4, fontSize: '.82rem', marginBottom: '2rem' }}>
+              You can skip this and we&apos;ll reach out by email instead.
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {weekdays.map(day => (
+                <div key={day}>
+                  <div style={{ fontSize: '.82rem', opacity: .5, marginBottom: 6 }}>{day}</div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                    {TIME_SLOTS.map(time => {
+                      const slot = `${day} at ${time}`
+                      return (
+                        <button key={slot} type="button"
+                          onClick={() => toggleItem('call_slots', slot)}
+                          style={chipStyle(form.call_slots.includes(slot))}>
+                          {time}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+
             <div style={{ display: 'flex', gap: 12, marginTop: '2rem' }}>
-              <button type="button" onClick={back} style={btnGhost}>← Back</button>
-              <button type="button" onClick={next} disabled={!form.faq} style={btnPrimary(!form.faq)}>Continue →</button>
+              <button type="button" onClick={() => setStep(1)} style={btnGhost}>← Back</button>
+              <button type="button" onClick={() => setStep(3)} style={btnPrimary()}>
+                {form.call_slots.length > 0 ? 'Continue →' : 'Skip →'}
+              </button>
             </div>
           </div>
         )}
 
+        {/* Step 3 — Review & submit */}
         {step === 3 && (
           <div>
-            <h1 style={{ fontFamily: 'Fraunces, serif', fontSize: '2rem', fontWeight: 800, marginBottom: '.5rem' }}>How should we reach you?</h1>
-            <p style={{ opacity: .6, marginBottom: '2rem' }}>Briefing emails go to your inbox. Urgent SMS alerts go to your mobile.</p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-              <div>
-                <label style={labelStyle}>Email address (for morning briefings) *</label>
-                <input style={inputStyle} type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="mike@blueridge.com" />
-              </div>
-              <div>
-                <label style={labelStyle}>Mobile number (for urgent SMS alerts) *</label>
-                <input style={inputStyle} type="tel" value={form.alert_phone} onChange={e => set('alert_phone', e.target.value)} placeholder="+1 604 555 0100" />
-                <p style={{ fontSize: '.78rem', opacity: .45, marginTop: 4 }}>We only SMS you when a caller flags an emergency.</p>
-              </div>
-            </div>
-            <div style={{ display: 'flex', gap: 12, marginTop: '2rem' }}>
-              <button type="button" onClick={back} style={btnGhost}>← Back</button>
-              <button type="button" onClick={next} disabled={!form.email || !form.alert_phone} style={btnPrimary(!form.email || !form.alert_phone)}>Continue →</button>
-            </div>
-          </div>
-        )}
-
-        {step === 4 && (
-          <div>
-            <h1 style={{ fontFamily: 'Fraunces, serif', fontSize: '2rem', fontWeight: 800, marginBottom: '.5rem' }}>How should your agent greet callers?</h1>
-            <p style={{ opacity: .6, marginBottom: '2rem' }}>Optional — leave blank for a default greeting.</p>
-            <div>
-              <label style={labelStyle}>Opening greeting (optional)</label>
-              <input style={inputStyle} value={form.greeting} onChange={e => set('greeting', e.target.value)}
-                placeholder={`Thanks for calling ${form.business_name || 'us'}! I'm here to help with any questions about our tours.`} />
-            </div>
-            <div style={{ display: 'flex', gap: 12, marginTop: '2rem' }}>
-              <button type="button" onClick={back} style={btnGhost}>← Back</button>
-              <button type="button" onClick={next} style={btnPrimary()}>Continue →</button>
-            </div>
-          </div>
-        )}
-
-        {step === 5 && (
-          <div>
-            <h1 style={{ fontFamily: 'Fraunces, serif', fontSize: '2rem', fontWeight: 800, marginBottom: '.5rem' }}>Ready to go live?</h1>
-            <p style={{ opacity: .6, marginBottom: '2rem' }}>Review your details before we set up your agent.</p>
+            <h1 style={{ fontFamily: 'Fraunces, serif', fontSize: '2rem', fontWeight: 800, marginBottom: '.5rem' }}>
+              Ready to submit?
+            </h1>
+            <p style={{ opacity: .6, marginBottom: '2rem' }}>
+              We&apos;ll review your application and reach out soon.
+            </p>
             <div style={{ background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.1)', borderRadius: 14, padding: '1.5rem', marginBottom: '1.5rem' }}>
               {([
                 ['Business', form.business_name],
                 ['Owner', form.owner_name],
+                ['Email', form.email],
+                ['Phone', form.alert_phone],
                 ['Location', form.location || '—'],
                 ['Tours', form.tour_types.join(', ') || '—'],
-                ['Email', form.email],
-                ['SMS phone', form.alert_phone],
-                ['Greeting', form.greeting || `(default for ${form.business_name})`],
+                ['Call times', form.call_slots.length > 0 ? form.call_slots.join(', ') : 'None selected'],
               ] as [string, string][]).map(([label, value]) => (
                 <div key={label} style={{ display: 'flex', gap: '1rem', padding: '8px 0', borderBottom: '1px solid rgba(255,255,255,.06)' }}>
                   <span style={{ minWidth: 100, opacity: .5, fontSize: '.88rem' }}>{label}</span>
@@ -213,13 +248,14 @@ export default function OnboardPage() {
             </div>
             {error && <p style={{ color: '#ff6b6b', marginBottom: '1rem', fontSize: '.9rem' }}>{error}</p>}
             <div style={{ display: 'flex', gap: 12 }}>
-              <button type="button" onClick={back} style={btnGhost}>← Back</button>
+              <button type="button" onClick={() => setStep(2)} style={btnGhost}>← Back</button>
               <button type="button" onClick={submit} disabled={submitting} style={btnPrimary(submitting)}>
-                {submitting ? 'Submitting...' : 'Get my agent →'}
+                {submitting ? 'Submitting...' : 'Submit application →'}
               </button>
             </div>
           </div>
         )}
+
       </div>
     </main>
   )
