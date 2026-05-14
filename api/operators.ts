@@ -39,7 +39,7 @@ export async function handleOperators(req: Request, res: Response): Promise<void
 
   await Promise.allSettled([
     sendEmail({
-      to: process.env.YOUR_NOTIFICATION_EMAIL!,
+      to: 'fun@bugme.travel',
       subject: `New signup: ${operator.business_name}`,
       html: `
         <h2>New tour operator signup</h2>
@@ -51,7 +51,7 @@ export async function handleOperators(req: Request, res: Response): Promise<void
         <pre style="background:#f5f5f5;padding:12px;">${operator.faq}</pre>
         <p><strong>Dashboard:</strong> <a href="${dashboardUrl}">${dashboardUrl}</a></p>
         <hr>
-        <p>To activate: set <code>twilio_number</code> and flip <code>active = true</code> in Supabase.</p>
+        <p>To activate: go to the <a href="${process.env.BASE_URL ?? 'https://phone-agent-production-e8a7.up.railway.app'}/admin?token=tour+agent">admin panel</a>, assign a Twilio number, and click Activate.</p>
       `,
     }),
     sendEmail({
