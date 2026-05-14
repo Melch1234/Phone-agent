@@ -94,7 +94,6 @@ export default function LandingV2() {
           <a href="#v2-who">Who it&apos;s for</a>
           <a href="#v2-pricing">Pricing</a>
         </nav>
-        <a href="/onboard" target="_blank" rel="noopener noreferrer" className="v2-btn v2-btn--primary v2-btn--sm">Get started</a>
       </header>
 
       {/* ── HERO ── */}
