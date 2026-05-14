@@ -17,7 +17,7 @@ const MARQUEE_ITEMS = [
 const STEPS = [
   { n: '01', title: 'They call.', body: 'Tour Agent picks up before the second ring — landline or mobile, your existing number forwarded.' },
   { n: '02', title: 'It listens, answers, captures.', body: 'Trained on your FAQ. Answers questions about tours and pricing in your voice. Takes name, number, and what they\'re after.' },
-  { n: '03', title: 'You wake up sorted.', body: 'Clean summary lands at 7am. Urgent calls SMS your on-call line immediately. Caller gets a confirmation text.' },
+  { n: '03', title: 'You wake up sorted.', body: 'Every enquiry captured overnight. A clean summary lands in your inbox at 7am — names, numbers, and what they\'re after.' },
 ]
 
 const FEATURES = [
