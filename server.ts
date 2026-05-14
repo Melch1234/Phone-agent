@@ -11,6 +11,7 @@ import { handleScrape } from './api/scrape'
 import { handleSettings } from './api/settings'
 import { handleVoicePreview } from './api/voicePreview'
 import { handleStream } from './api/stream'
+import { handleAdminOperators } from './api/admin'
 import { startBriefingCron } from './src/lib/briefing'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -31,6 +32,8 @@ async function main() {
   expressApp.post('/api/scrape', handleScrape)
   expressApp.post('/api/settings', handleSettings)
   expressApp.get('/api/voice-preview', handleVoicePreview)
+  expressApp.get('/api/admin/operators', handleAdminOperators)
+  expressApp.patch('/api/admin/operators', handleAdminOperators)
 
   expressApp.all('/{*splat}', (req, res) => {
     const parsedUrl = parse(req.url!, true)
