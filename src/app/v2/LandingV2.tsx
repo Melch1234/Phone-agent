@@ -23,10 +23,8 @@ const STEPS = [
 const FEATURES = [
   { title: 'Answers your FAQs', body: 'Trained on tours, prices, meeting points, cancellation policy — your own playbook.', icon: <ChatIcon /> },
   { title: 'Captures every enquiry', body: 'Name, number, party size, dates, intent. Cleanly structured, never lost.', icon: <ClipboardIcon /> },
-  { title: 'Urgent escalation', body: 'Emergencies trigger an instant SMS to your on-call line. Default rules, customisable triggers.', icon: <AlertIcon /> },
   { title: 'Works on any phone', body: 'Landlines, mobiles, VoIP. Forward your existing number — no porting required.', icon: <PhoneIcon /> },
   { title: 'Morning email summary', body: 'Every overnight call, structured by priority. In your inbox at 7am with coffee.', icon: <MailIcon /> },
-  { title: 'SMS back to caller', body: 'Confirmation with what was captured and when you\'ll be in touch. Builds trust.', icon: <SmsIcon /> },
 ]
 
 const WHO = [
@@ -39,12 +37,12 @@ const WHO = [
 const TIERS = [
   {
     name: 'Starter', price: 97, blurb: 'For solo operators dipping in.',
-    features: ['1 phone number', 'Up to 200 calls/mo', 'Daily email summary', 'Urgent SMS alerts', 'Email support'],
+    features: ['1 phone number', 'Up to 200 calls/mo', 'Daily email summary', 'Email support'],
     recommended: false,
   },
   {
     name: 'Growth', price: 197, blurb: 'Most tourism businesses pick this.',
-    features: ['3 phone numbers', 'Unlimited calls', 'Daily email summary', 'SMS confirmations + escalation', 'Custom FAQ training', 'Priority support'],
+    features: ['3 phone numbers', 'Unlimited calls', 'Daily email summary', 'Custom FAQ training', 'Priority support'],
     recommended: true,
   },
   {
@@ -111,7 +109,7 @@ export default function LandingV2() {
               <span className="v2-hero-gradient">Now you don&apos;t<br />have to either.</span>
             </h1>
             <p className="v2-lead" style={{ maxWidth: 480, marginBottom: 40 }}>
-              Tour Agent answers the phone when you can&apos;t. It takes the booking enquiry, escalates emergencies by SMS, and emails your team a clean summary every morning.
+              Tour Agent answers the phone when you can&apos;t. It takes the booking enquiry and emails your team a clean summary every morning.
             </p>
             <div className="v2-hero-actions">
               <a href="/onboard" target="_blank" rel="noopener noreferrer" className="v2-btn v2-btn--primary v2-btn--lg">
