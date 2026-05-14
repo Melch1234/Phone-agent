@@ -437,7 +437,7 @@ export default function LandingV2() {
           ))}
         </div>
         <div className="v2-container v2-footer-base">
-          <span>© 2026 Tour Agent. Built on Twilio + OpenAI.</span>
+          <span>© 2026 Tour Agent.</span>
         </div>
       </footer>
     </div>
