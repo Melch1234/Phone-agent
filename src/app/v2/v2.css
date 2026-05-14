@@ -163,6 +163,11 @@
   transition: background 200ms var(--v2-ease), backdrop-filter 200ms var(--v2-ease), border-color 200ms var(--v2-ease);
   border-bottom: 1px solid transparent;
 }
+.v2-header > .v2-btn {
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
 .v2-header--scrolled {
   background: rgba(14, 27, 44, 0.88);
   -webkit-backdrop-filter: blur(12px);
