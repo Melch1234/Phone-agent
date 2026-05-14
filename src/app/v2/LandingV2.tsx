@@ -94,7 +94,7 @@ export default function LandingV2() {
           <a href="#v2-who">Who it&apos;s for</a>
           <a href="#v2-pricing">Pricing</a>
         </nav>
-        <a href="/onboard" className="v2-btn v2-btn--primary v2-btn--sm">Get started</a>
+        <a href="/onboard" target="_blank" rel="noopener noreferrer" className="v2-btn v2-btn--primary v2-btn--sm">Get started</a>
       </header>
 
       {/* ── HERO ── */}
@@ -115,7 +115,7 @@ export default function LandingV2() {
               Tour Agent answers the phone when you can&apos;t. It takes the booking enquiry, escalates emergencies by SMS, and emails your team a clean summary every morning.
             </p>
             <div className="v2-hero-actions">
-              <a href="/onboard" className="v2-btn v2-btn--primary v2-btn--lg">
+              <a href="/onboard" target="_blank" rel="noopener noreferrer" className="v2-btn v2-btn--primary v2-btn--lg">
                 Get started <ArrowRight />
               </a>
               <a href="#v2-how" className="v2-btn v2-btn--secondary v2-btn--lg">
@@ -298,7 +298,7 @@ export default function LandingV2() {
                   ))}
                 </ul>
                 <a
-                  href="/onboard"
+                  href="/onboard" target="_blank" rel="noopener noreferrer"
                   className={`v2-btn ${t.recommended ? 'v2-btn--primary' : 'v2-btn--outline-ink'} v2-tier-cta`}
                 >
                   Start with {t.name}
@@ -321,7 +321,7 @@ export default function LandingV2() {
           <p className="v2-lead" style={{ marginTop: 22, color: 'var(--v2-fg-on-dark-mut)', maxWidth: 520, marginInline: 'auto' }}>
             Tell us a few details about your tours. We&apos;ll have your AI agent on the line by tomorrow morning.
           </p>
-          <a href="/onboard" className="v2-btn v2-btn--primary v2-btn--lg" style={{ marginTop: 32 }}>
+          <a href="/onboard" target="_blank" rel="noopener noreferrer" className="v2-btn v2-btn--primary v2-btn--lg" style={{ marginTop: 32 }}>
             Set up my company <ArrowRight />
           </a>
         </div>
