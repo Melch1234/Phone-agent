@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { stripe } from '../src/lib/stripe'
+import { getStripe } from '../src/lib/stripe'
 import { supabase } from '../src/lib/supabase'
 import { sendEmail } from '../src/lib/resend'
 import crypto from 'crypto'
@@ -10,7 +10,7 @@ export async function handleWebhook(req: Request, res: Response): Promise<void> 
 
   let event
   try {
-    event = stripe.webhooks.constructEvent(req.body as Buffer, sig, secret)
+    event = getStripe().webhooks.constructEvent(req.body as Buffer, sig, secret)
   } catch (err) {
     console.error('[webhook] Signature verification failed:', err)
     res.status(400).send('Webhook signature invalid')

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { stripe, PRICE_IDS } from '../src/lib/stripe'
+import { getStripe, getPriceId } from '../src/lib/stripe'
 
 export async function handleCheckout(req: Request, res: Response): Promise<void> {
   const { plan, name, email, business_name, alert_phone } = req.body as {
@@ -20,8 +20,10 @@ export async function handleCheckout(req: Request, res: Response): Promise<void>
     return
   }
 
-  const priceId = PRICE_IDS[plan as 'starter' | 'growth' | 'agency']
-  if (!priceId) {
+  let priceId: string
+  try {
+    priceId = getPriceId(plan as 'starter' | 'growth' | 'agency')
+  } catch {
     res.status(500).json({ error: 'Plan not configured' })
     return
   }
@@ -29,7 +31,7 @@ export async function handleCheckout(req: Request, res: Response): Promise<void>
   const baseUrl = process.env.BASE_URL ?? 'https://phone-agent-production-e8a7.up.railway.app'
 
   try {
-    const session = await stripe.checkout.sessions.create({
+    const session = await getStripe().checkout.sessions.create({
       mode: 'subscription',
       customer_email: email,
       line_items: [{ price: priceId, quantity: 1 }],
