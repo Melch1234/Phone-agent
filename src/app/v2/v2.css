@@ -604,3 +604,47 @@
   .v2-who-grid { grid-template-columns: 1fr; }
   .v2-header { padding-inline: 20px; }
 }
+
+/* ── SIGNUP MODAL ── */
+.v2-modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(14, 27, 44, 0.7);
+  z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
+}
+.v2-modal {
+  background: #fff; border-radius: 16px; padding: 2rem;
+  max-width: 520px; width: 100%; max-height: 90vh; overflow-y: auto;
+  position: relative;
+}
+.v2-modal-close {
+  position: absolute; top: 16px; right: 16px;
+  background: none; border: none; font-size: 1.4rem;
+  cursor: pointer; color: #999; line-height: 1;
+}
+.v2-modal-plan-badge {
+  background: #FEF0E7; color: #F26A1F; font-weight: 600;
+  font-size: 0.8rem; padding: 4px 12px; border-radius: 999px;
+  text-transform: capitalize; display: inline-block; margin-bottom: 20px;
+}
+.v2-modal-title { font-size: 1.4rem; font-weight: 700; color: #0E1B2C; margin-bottom: 6px; }
+.v2-modal-subtitle { color: #666; font-size: 0.9rem; margin-bottom: 24px; }
+.v2-modal-form { display: flex; flex-direction: column; gap: 14px; }
+.v2-modal-field label { display: block; font-size: 0.82rem; color: #555; margin-bottom: 5px; }
+.v2-modal-field input {
+  width: 100%; padding: 10px 14px; border-radius: 8px;
+  border: 1px solid #ddd; font-size: 0.9rem; box-sizing: border-box;
+}
+.v2-modal-divider { border-top: 1px solid #eee; padding-top: 16px; display: flex; flex-direction: column; gap: 12px; }
+.v2-modal-check { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; }
+.v2-modal-check input[type="checkbox"] { margin-top: 3px; flex-shrink: 0; }
+.v2-modal-check span { font-size: 0.85rem; color: #444; line-height: 1.5; }
+.v2-modal-check a { color: #F26A1F; }
+.v2-modal-error { color: #c0392b; font-size: 0.85rem; }
+.v2-modal-submit {
+  background: #F26A1F; color: #fff; border: none; border-radius: 999px;
+  padding: 13px 28px; font-weight: 600; font-size: 0.95rem;
+  cursor: pointer; margin-top: 4px; transition: opacity 0.15s;
+}
+.v2-modal-submit:disabled { opacity: 0.5; cursor: not-allowed; }

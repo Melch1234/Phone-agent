@@ -13,6 +13,8 @@ import { handleVoicePreview } from './api/voicePreview'
 import { handleStream } from './api/stream'
 import { handleAdminOperators } from './api/admin'
 import { handleContact } from './api/contact'
+import { handleCheckout } from './api/checkout'
+import { handleWebhook } from './api/webhook'
 import { startBriefingCron } from './src/lib/briefing'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -24,6 +26,10 @@ async function main() {
   await app.prepare()
 
   const expressApp = express()
+
+  // Stripe webhook needs raw body before JSON middleware
+  expressApp.post('/api/webhook', express.raw({ type: 'application/json' }), handleWebhook)
+
   expressApp.use(express.json())
   expressApp.use(express.urlencoded({ extended: false }))
 
@@ -36,6 +42,7 @@ async function main() {
   expressApp.get('/api/admin/operators', handleAdminOperators)
   expressApp.patch('/api/admin/operators', handleAdminOperators)
   expressApp.post('/api/contact', handleContact)
+  expressApp.post('/api/checkout', handleCheckout)
 
   expressApp.all('/{*splat}', (req, res) => {
     const parsedUrl = parse(req.url!, true)

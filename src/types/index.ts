@@ -11,6 +11,8 @@ export interface Operator {
   intake_questions: string | null
   active: boolean
   plan: 'starter' | 'growth' | 'agency'
+  stripe_customer_id: string | null
+  stripe_subscription_id: string | null
   dashboard_token: string
   created_at: string
 }

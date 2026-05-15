@@ -40,41 +40,77 @@ const TIERS = [
     features: ['1 phone line', '300 min/mo included', 'AI trained on your FAQ', 'Team dashboard', 'Email support'],
     recommended: false,
     cta: 'Get started',
-    href: '/onboard',
+    planKey: 'starter' as const,
   },
   {
     name: 'Growth', price: 399, blurb: 'Most tourism businesses pick this.',
     features: ['3 phone lines', '700 min/mo included', 'AI trained on your FAQ', 'Team dashboard', 'Priority support'],
     recommended: true,
     cta: 'Get started',
-    href: '/onboard',
+    planKey: 'growth' as const,
   },
   {
     name: 'Agency', price: 799, blurb: 'For multi-location operators.',
     features: ['5 phone lines', '1,500 min/mo included', 'Per-brand FAQ training', 'Team dashboard', 'Dedicated support'],
     recommended: false,
     cta: 'Get started',
-    href: '/onboard',
+    planKey: 'agency' as const,
   },
   {
     name: 'Custom', price: null, blurb: 'Weekends only, seasonal, or something else entirely.',
     features: ['Any number of lines', 'Tailored minute allowance', 'Custom hours & schedule', 'Multi-location setups', 'Let\'s figure it out together'],
     recommended: false,
     cta: 'Get in touch',
-    href: '#v2-contact',
+    planKey: null,
   },
 ]
+
+type PlanKey = 'starter' | 'growth' | 'agency'
 
 export default function LandingV2() {
   const [scrolled, setScrolled] = useState(false)
   const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' })
   const [contactState, setContactState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+  const [signupPlan, setSignupPlan] = useState<PlanKey | null>(null)
+  const [signupForm, setSignupForm] = useState({ name: '', email: '', business_name: '', alert_phone: '' })
+  const [agreedTerms, setAgreedTerms] = useState(false)
+  const [agreedAI, setAgreedAI] = useState(false)
+  const [signupState, setSignupState] = useState<'idle' | 'submitting' | 'error'>('idle')
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  function openSignup(plan: PlanKey) {
+    setSignupForm({ name: '', email: '', business_name: '', alert_phone: '' })
+    setAgreedTerms(false)
+    setAgreedAI(false)
+    setSignupState('idle')
+    setSignupPlan(plan)
+  }
+
+  async function submitSignup(e: React.FormEvent) {
+    e.preventDefault()
+    if (!signupPlan || !agreedTerms || !agreedAI) return
+    setSignupState('submitting')
+    try {
+      const r = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...signupForm, plan: signupPlan }),
+      })
+      const data = await r.json()
+      if (r.ok && data.url) {
+        window.location.href = data.url
+      } else {
+        setSignupState('error')
+      }
+    } catch {
+      setSignupState('error')
+    }
+  }
 
   async function submitContact(e: React.FormEvent) {
     e.preventDefault()
@@ -310,14 +346,19 @@ export default function LandingV2() {
                     </li>
                   ))}
                 </ul>
-                <a
-                  href={t.href}
-                  target={t.href.startsWith('#') ? undefined : '_blank'}
-                  rel={t.href.startsWith('#') ? undefined : 'noopener noreferrer'}
-                  className={`v2-btn ${t.recommended ? 'v2-btn--primary' : 'v2-btn--outline-ink'} v2-tier-cta`}
-                >
-                  {t.cta}
-                </a>
+                {t.planKey ? (
+                  <button
+                    type="button"
+                    onClick={() => openSignup(t.planKey!)}
+                    className={`v2-btn ${t.recommended ? 'v2-btn--primary' : 'v2-btn--outline-ink'} v2-tier-cta`}
+                  >
+                    {t.cta}
+                  </button>
+                ) : (
+                  <a href="#v2-contact" className="v2-btn v2-btn--outline-ink v2-tier-cta">
+                    {t.cta}
+                  </a>
+                )}
               </div>
             ))}
           </div>
@@ -455,6 +496,62 @@ export default function LandingV2() {
           <span>© 2026 Tour Agent.</span>
         </div>
       </footer>
+
+      {/* ── SIGNUP MODAL ── */}
+      {signupPlan && (
+        <div className="v2-modal-overlay" onClick={e => { if (e.target === e.currentTarget) setSignupPlan(null) }}>
+          <div className="v2-modal">
+            <button type="button" className="v2-modal-close" onClick={() => setSignupPlan(null)}>×</button>
+            <span className="v2-modal-plan-badge">
+              {signupPlan} plan — ${signupPlan === 'starter' ? 199 : signupPlan === 'growth' ? 399 : 799}/mo
+            </span>
+            <h2 className="v2-modal-title">Get started</h2>
+            <p className="v2-modal-subtitle">Fill in your details and you&apos;ll be taken to secure payment. Your line will be ready within hours.</p>
+
+            <form onSubmit={submitSignup} className="v2-modal-form">
+              <div className="v2-modal-field">
+                <label>Full name</label>
+                <input required value={signupForm.name} onChange={e => setSignupForm(p => ({ ...p, name: e.target.value }))} placeholder="Jane Smith" />
+              </div>
+              <div className="v2-modal-field">
+                <label>Email</label>
+                <input required type="email" value={signupForm.email} onChange={e => setSignupForm(p => ({ ...p, email: e.target.value }))} placeholder="jane@mytours.com" />
+              </div>
+              <div className="v2-modal-field">
+                <label>Business name</label>
+                <input required value={signupForm.business_name} onChange={e => setSignupForm(p => ({ ...p, business_name: e.target.value }))} placeholder="Island Tours Ltd" />
+              </div>
+              <div className="v2-modal-field">
+                <label>Your mobile (for urgent SMS alerts)</label>
+                <input required type="tel" value={signupForm.alert_phone} onChange={e => setSignupForm(p => ({ ...p, alert_phone: e.target.value }))} placeholder="+64 21 000 0000" />
+              </div>
+
+              <div className="v2-modal-divider">
+                <label className="v2-modal-check">
+                  <input type="checkbox" checked={agreedTerms} onChange={e => setAgreedTerms(e.target.checked)} />
+                  <span>
+                    I agree to the <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>. I understand my subscription renews monthly and I can cancel any time — I retain access until the end of my billing period.
+                  </span>
+                </label>
+                <label className="v2-modal-check">
+                  <input type="checkbox" checked={agreedAI} onChange={e => setAgreedAI(e.target.checked)} />
+                  <span>
+                    I understand Tour Agent uses AI technology that may occasionally make errors or require an initial training period to accurately represent my tours and policies. I accept responsibility for reviewing and correcting responses during onboarding.
+                  </span>
+                </label>
+              </div>
+
+              {signupState === 'error' && (
+                <p className="v2-modal-error">Something went wrong. Please try again or email us at fun@bugme.travel.</p>
+              )}
+
+              <button type="submit" className="v2-modal-submit" disabled={!agreedTerms || !agreedAI || signupState === 'submitting'}>
+                {signupState === 'submitting' ? 'Redirecting to payment…' : 'Continue to payment →'}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
