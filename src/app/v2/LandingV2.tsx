@@ -356,7 +356,7 @@ export default function LandingV2() {
             <div style={{ background: 'rgba(111,207,151,.1)', border: '1px solid rgba(111,207,151,.3)', borderRadius: 12, padding: '2rem', textAlign: 'center' }}>
               <div style={{ fontSize: '2rem', marginBottom: 8 }}>✓</div>
               <p style={{ fontWeight: 600, marginBottom: 4 }}>Message sent!</p>
-              <p style={{ opacity: .6, fontSize: '.9rem' }}>We&apos;ll get back to you shortly.</p>
+              <p style={{ opacity: .6, fontSize: '.9rem' }}>Your message was forwarded to <strong>fun@bugme.travel</strong> — Tour Agent is partnered with BUGMe, who will get back to you shortly.</p>
             </div>
           ) : (
             <form onSubmit={submitContact} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
