@@ -41,6 +41,7 @@ export async function handleLogin(req: Request, res: Response): Promise<void> {
 
 // POST /api/auth/forgot-pin — reset PIN and email it
 export async function handleForgotPin(req: Request, res: Response): Promise<void> {
+  console.log('[forgot-pin] handler called, body:', JSON.stringify(req.body))
   const { email } = req.body as { email?: string }
 
   if (!email) {
