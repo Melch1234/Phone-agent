@@ -1,14 +1,16 @@
 import { Request, Response } from 'express'
 import { supabase } from '../src/lib/supabase'
 
-function isAdmin(token: string | undefined): boolean {
-  return !!token && token === process.env.ADMIN_TOKEN
+function isAdmin(token: string | undefined, req: Request): boolean {
+  const adminToken = process.env.ADMIN_TOKEN
+  const cookieToken = req.cookies?.admin_auth
+  return !!adminToken && (token === adminToken || cookieToken === adminToken)
 }
 
 export async function handleAdminOperators(req: Request, res: Response): Promise<void> {
   const token = (req.query.token || req.body?.token) as string | undefined
 
-  if (!isAdmin(token)) {
+  if (!isAdmin(token, req)) {
     res.status(403).json({ error: 'Unauthorized' })
     return
   }

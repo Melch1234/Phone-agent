@@ -36,25 +36,32 @@ const s = {
 
 function AdminContent() {
   const params = useSearchParams()
-  const token = params.get('token') ?? ''
   const [operators, setOperators] = useState<Operator[]>([])
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState<Record<string, string>>({})
   const [saving, setSaving] = useState<string | null>(null)
 
   useEffect(() => {
-    fetch(`/api/admin/operators?token=${token}`)
+    // If token is in URL, redirect to auth endpoint to set cookie + strip token from URL
+    const token = params.get('token')
+    if (token) {
+      window.location.replace(`/api/auth/admin?token=${encodeURIComponent(token)}`)
+      return
+    }
+
+    // No URL token — rely on cookie being sent automatically
+    fetch('/api/admin/operators')
       .then(r => r.json())
       .then(data => { setOperators(Array.isArray(data) ? data : []); setLoading(false) })
       .catch(() => setLoading(false))
-  }, [token])
+  }, [params])
 
   async function save(op: Operator) {
     setSaving(op.id)
     await fetch('/api/admin/operators', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token, operatorId: op.id, twilio_number: editing[op.id] ?? op.twilio_number }),
+      body: JSON.stringify({ operatorId: op.id, twilio_number: editing[op.id] ?? op.twilio_number }),
     })
     setOperators(prev => prev.map(o => o.id === op.id ? { ...o, twilio_number: editing[op.id] ?? o.twilio_number } : o))
     setSaving(null)
@@ -65,7 +72,7 @@ function AdminContent() {
     await fetch('/api/admin/operators', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token, operatorId: op.id, active: !op.active }),
+      body: JSON.stringify({ operatorId: op.id, active: !op.active }),
     })
     setOperators(prev => prev.map(o => o.id === op.id ? { ...o, active: !o.active } : o))
     setSaving(null)

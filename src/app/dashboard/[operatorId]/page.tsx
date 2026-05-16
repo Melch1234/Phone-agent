@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import { supabase } from '@/lib/supabase'
 import { notFound, redirect } from 'next/navigation'
+import { cookies } from 'next/headers'
 import SettingsPanel from './SettingsPanel'
 import VoicePreview from './VoicePreview'
 import CallsList from './CallsList'
@@ -22,7 +23,16 @@ export default async function DashboardPage({ params, searchParams }: Props) {
     .single()
 
   if (!operator) notFound()
-  if (token !== operator.dashboard_token) redirect('/')
+
+  // If token is in URL, redirect to auth endpoint to set cookie + strip token from URL
+  if (token) {
+    redirect(`/api/auth/dashboard?operatorId=${operatorId}&token=${encodeURIComponent(token)}`)
+  }
+
+  // No URL token — check cookie
+  const cookieStore = await cookies()
+  const cookieToken = cookieStore.get(`dash_${operatorId}`)?.value
+  if (!cookieToken || cookieToken !== String(operator.dashboard_token)) redirect('/')
 
   const since = new Date()
   since.setDate(since.getDate() - 7)

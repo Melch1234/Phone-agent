@@ -3,6 +3,7 @@ import { createServer } from 'http'
 import { parse } from 'url'
 import next from 'next'
 import express from 'express'
+import cookieParser from 'cookie-parser'
 import { WebSocketServer } from 'ws'
 import { handleIncoming } from './api/incoming'
 import { handleOperators } from './api/operators'
@@ -16,6 +17,7 @@ import { handleContact } from './api/contact'
 import { handleCheckout } from './api/checkout'
 import { handleWebhook } from './api/webhook'
 import { startBriefingCron } from './src/lib/briefing'
+import { handleDashboardAuth, handleAdminAuth } from './api/auth'
 
 const dev = process.env.NODE_ENV !== 'production'
 const port = parseInt(process.env.PORT || '3000', 10)
@@ -32,6 +34,10 @@ async function main() {
 
   expressApp.use(express.json())
   expressApp.use(express.urlencoded({ extended: false }))
+  expressApp.use(cookieParser())
+
+  expressApp.get('/api/auth/dashboard', handleDashboardAuth)
+  expressApp.get('/api/auth/admin', handleAdminAuth)
 
   expressApp.post('/api/incoming', handleIncoming)
   expressApp.post('/api/operators', handleOperators)
