@@ -8,10 +8,11 @@ export async function sendEmail(opts: {
   html: string
   from?: string
 }): Promise<void> {
-  await resend.emails.send({
-    from: opts.from ?? (process.env.RESEND_FROM_EMAIL ?? 'Tour Agent <onboarding@resend.dev>'),
+  const { error } = await resend.emails.send({
+    from: opts.from ?? (process.env.RESEND_FROM_EMAIL ?? 'Tour Agent <fun@bugme.travel>'),
     to: opts.to,
     subject: opts.subject,
     html: opts.html,
   })
+  if (error) throw error
 }
