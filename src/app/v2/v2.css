@@ -623,12 +623,11 @@
   background: none; border: none; font-size: 1.4rem;
   cursor: pointer; color: #999; line-height: 1;
 }
-.v2-modal-plan-badge {
-  background: #FEF0E7; color: #F26A1F; font-weight: 600;
-  font-size: 0.8rem; padding: 4px 12px; border-radius: 999px;
-  text-transform: capitalize; display: inline-block; margin-bottom: 20px;
-}
-.v2-modal-title { font-size: 1.4rem; font-weight: 700; color: #0E1B2C; margin-bottom: 6px; }
+.v2-modal-title { font-size: 1.6rem; font-weight: 700; color: #0E1B2C; margin-bottom: 4px; text-transform: capitalize; }
+.v2-modal-title--plan { margin-bottom: 2px; }
+.v2-modal-price { display: flex; align-items: baseline; gap: 4px; margin-bottom: 20px; }
+.v2-modal-price-amt { font-size: 2rem; font-weight: 800; color: #F26A1F; }
+.v2-modal-price-per { font-size: 0.95rem; color: #888; }
 .v2-modal-subtitle { color: #666; font-size: 0.9rem; margin-bottom: 24px; }
 .v2-modal-form { display: flex; flex-direction: column; gap: 14px; }
 .v2-modal-field label { display: block; font-size: 0.82rem; color: #555; margin-bottom: 5px; }

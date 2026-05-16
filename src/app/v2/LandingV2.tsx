@@ -517,10 +517,11 @@ export default function LandingV2() {
         <div className="v2-modal-overlay" onClick={e => { if (e.target === e.currentTarget) setSignupPlan(null) }}>
           <div className="v2-modal">
             <button type="button" className="v2-modal-close" onClick={() => setSignupPlan(null)}>×</button>
-            <span className="v2-modal-plan-badge">
-              {signupPlan} plan — ${signupPlan === 'starter' ? 199 : signupPlan === 'growth' ? 399 : 799}/mo
-            </span>
-            <h2 className="v2-modal-title">Get started</h2>
+            <h2 className="v2-modal-title v2-modal-title--plan">{signupPlan} plan</h2>
+            <div className="v2-modal-price">
+              <span className="v2-modal-price-amt">${signupPlan === 'starter' ? 199 : signupPlan === 'growth' ? 399 : 799}</span>
+              <span className="v2-modal-price-per">/month</span>
+            </div>
             <p className="v2-modal-subtitle">Fill in your details and you&apos;ll be taken to secure payment. Your line will be ready within hours.</p>
 
             <form onSubmit={submitSignup} className="v2-modal-form">
