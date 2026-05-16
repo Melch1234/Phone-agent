@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { supabase } from '../src/lib/supabase'
+import { sendEmail } from '../src/lib/resend'
 import crypto from 'crypto'
 
 const isProd = process.env.NODE_ENV === 'production'
@@ -75,7 +76,6 @@ export async function handleForgotPin(req: Request, res: Response): Promise<void
 
   await supabase.from('operators').update({ pin: newPin }).eq('id', operator.id)
 
-  const { sendEmail } = await import('../src/lib/resend')
   const baseUrl = process.env.BASE_URL ?? 'https://phone-agent-production-e8a7.up.railway.app'
   await sendEmail({
     to: operator.email,
