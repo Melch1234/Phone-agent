@@ -204,6 +204,19 @@
 .v2-nav a:hover { color: var(--v2-ink-900); }
 .v2-header--scrolled .v2-nav a { color: rgba(245,239,228,0.6); }
 .v2-header--scrolled .v2-nav a:hover { color: var(--v2-sand-100); }
+.v2-nav-dashboard {
+  padding: 6px 16px;
+  background: rgba(232,130,12,0.12);
+  border: 1px solid rgba(232,130,12,0.35);
+  border-radius: 50px;
+  color: #e8820c !important;
+  transition: background 200ms var(--v2-ease), border-color 200ms var(--v2-ease);
+}
+.v2-nav-dashboard:hover {
+  background: rgba(232,130,12,0.22) !important;
+  border-color: rgba(232,130,12,0.6) !important;
+  color: #e8820c !important;
+}
 
 /* ── Hero ── */
 .v2-hero {

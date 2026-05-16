@@ -17,7 +17,7 @@ import { handleContact } from './api/contact'
 import { handleCheckout } from './api/checkout'
 import { handleWebhook } from './api/webhook'
 import { startBriefingCron } from './src/lib/briefing'
-import { handleDashboardAuth, handleAdminAuth } from './api/auth'
+import { handleDashboardAuth, handleAdminAuth, handleLogin, handleForgotPin } from './api/auth'
 
 const dev = process.env.NODE_ENV !== 'production'
 const port = parseInt(process.env.PORT || '3000', 10)
@@ -37,6 +37,8 @@ async function main() {
   expressApp.use(cookieParser())
 
   expressApp.post('/api/auth/dashboard', handleDashboardAuth)
+  expressApp.post('/api/auth/login', handleLogin)
+  expressApp.post('/api/auth/forgot-pin', handleForgotPin)
   expressApp.get('/api/auth/admin', handleAdminAuth)
 
   expressApp.post('/api/incoming', handleIncoming)

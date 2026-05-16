@@ -141,6 +141,7 @@ export default function LandingV2() {
           <a href="#v2-features">Features</a>
           <a href="#v2-who">Who it&apos;s for</a>
           <a href="#v2-pricing">Pricing</a>
+          <a href="/login" className="v2-nav-dashboard">Dashboard</a>
         </nav>
       </header>
 
