@@ -1,33 +1,35 @@
 import { Request, Response } from 'express'
 import { supabase } from '../src/lib/supabase'
 
-const COOKIE_MAX_AGE = 30 * 24 * 60 * 60 * 1000 // 30 days
 const isProd = process.env.NODE_ENV === 'production'
 
 export async function handleDashboardAuth(req: Request, res: Response): Promise<void> {
-  const { operatorId, token } = req.query as { operatorId?: string; token?: string }
+  const { operatorId, pin } = req.body as { operatorId?: string; pin?: string }
 
-  if (!operatorId || !token) { res.redirect('/'); return }
-
-  const { data: operator } = await supabase
-    .from('operators')
-    .select('id, dashboard_token')
-    .eq('id', operatorId)
-    .single()
-
-  if (!operator || token !== String(operator.dashboard_token)) {
-    res.redirect('/')
+  if (!operatorId || !pin) {
+    res.status(400).json({ error: 'Missing operatorId or pin' })
     return
   }
 
-  res.cookie(`dash_${operatorId}`, token, {
+  const { data: operator } = await supabase
+    .from('operators')
+    .select('id, pin')
+    .eq('id', operatorId)
+    .single()
+
+  if (!operator || !operator.pin || pin !== operator.pin) {
+    res.status(401).json({ error: 'Incorrect PIN' })
+    return
+  }
+
+  res.cookie(`dash_${operatorId}`, operator.pin, {
     httpOnly: true,
     secure: isProd,
     sameSite: 'strict',
-    maxAge: COOKIE_MAX_AGE,
+    maxAge: 30 * 24 * 60 * 60 * 1000,
     path: '/',
   })
-  res.redirect(`/dashboard/${operatorId}`)
+  res.json({ ok: true })
 }
 
 export async function handleAdminAuth(req: Request, res: Response): Promise<void> {

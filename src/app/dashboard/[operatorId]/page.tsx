@@ -9,12 +9,10 @@ import CallsList from './CallsList'
 
 interface Props {
   params: Promise<{ operatorId: string }>
-  searchParams: Promise<{ token?: string }>
 }
 
-export default async function DashboardPage({ params, searchParams }: Props) {
+export default async function DashboardPage({ params }: Props) {
   const { operatorId } = await params
-  const { token } = await searchParams
 
   const { data: operator } = await supabase
     .from('operators')
@@ -24,15 +22,11 @@ export default async function DashboardPage({ params, searchParams }: Props) {
 
   if (!operator) notFound()
 
-  // If token is in URL, redirect to auth endpoint to set cookie + strip token from URL
-  if (token) {
-    redirect(`/api/auth/dashboard?operatorId=${operatorId}&token=${encodeURIComponent(token)}`)
-  }
-
-  // No URL token — check cookie
   const cookieStore = await cookies()
   const cookieToken = cookieStore.get(`dash_${operatorId}`)?.value
-  if (!cookieToken || cookieToken !== String(operator.dashboard_token)) redirect('/')
+  if (!cookieToken || !operator.pin || cookieToken !== operator.pin) {
+    redirect(`/dashboard/${operatorId}/login`)
+  }
 
   const since = new Date()
   since.setDate(since.getDate() - 7)

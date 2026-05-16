@@ -18,7 +18,7 @@ export async function handleAdminOperators(req: Request, res: Response): Promise
   if (req.method === 'GET') {
     const { data, error } = await supabase
       .from('operators')
-      .select('id, business_name, owner_name, email, alert_phone, twilio_number, active, created_at')
+      .select('id, business_name, owner_name, email, alert_phone, twilio_number, active, pin, created_at')
       .order('created_at', { ascending: false })
 
     if (error) { res.status(500).json({ error: 'Failed to fetch operators' }); return }
@@ -46,14 +46,14 @@ export async function handleAdminOperators(req: Request, res: Response): Promise
     if (active === true && twilio_number) {
       const { data: op } = await supabase
         .from('operators')
-        .select('id, business_name, owner_name, email, dashboard_token')
+        .select('id, business_name, owner_name, email, pin')
         .eq('id', operatorId)
         .single()
 
       if (op) {
         const { sendEmail } = await import('../src/lib/resend')
         const baseUrl = process.env.BASE_URL ?? 'https://phone-agent-production-e8a7.up.railway.app'
-        const dashboardUrl = `${baseUrl}/dashboard/${op.id}?token=${op.dashboard_token}`
+        const dashboardUrl = `${baseUrl}/dashboard/${op.id}`
         await sendEmail({
           to: op.email,
           subject: `Your Tour Agent line is ready — ${twilio_number}`,
@@ -64,10 +64,12 @@ export async function handleAdminOperators(req: Request, res: Response): Promise
             <p>Forward this number to your existing business line, or start using it straight away. Your AI agent is ready to answer calls 24/7.</p>
             <p><strong>Next steps:</strong></p>
             <ol>
-              <li>Visit your <a href="${dashboardUrl}">dashboard</a> to set up your FAQ and greeting.</li>
+              <li>Log in to your <a href="${dashboardUrl}">dashboard</a> using your PIN: <strong>${op.pin}</strong></li>
+              <li>Set up your FAQ and greeting so the AI knows your tours.</li>
               <li>Forward <strong>${twilio_number}</strong> to your business phone, or share it with guests directly.</li>
               <li>Your overnight briefing email will arrive at 6am UTC each day.</li>
             </ol>
+            <p>Bookmark your dashboard: <a href="${dashboardUrl}">${dashboardUrl}</a></p>
             <p>Any questions? Reply to this email or reach us at <a href="mailto:fun@bugme.travel">fun@bugme.travel</a>.</p>
             <p>— The Tour Agent team</p>
           `,

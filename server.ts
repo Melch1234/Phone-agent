@@ -36,7 +36,7 @@ async function main() {
   expressApp.use(express.urlencoded({ extended: false }))
   expressApp.use(cookieParser())
 
-  expressApp.get('/api/auth/dashboard', handleDashboardAuth)
+  expressApp.post('/api/auth/dashboard', handleDashboardAuth)
   expressApp.get('/api/auth/admin', handleAdminAuth)
 
   expressApp.post('/api/incoming', handleIncoming)

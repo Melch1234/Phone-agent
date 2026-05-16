@@ -4,6 +4,10 @@ import { supabase } from '../src/lib/supabase'
 import { sendEmail } from '../src/lib/resend'
 import crypto from 'crypto'
 
+function generatePin(): string {
+  return Math.floor(100000 + Math.random() * 900000).toString()
+}
+
 export async function handleWebhook(req: Request, res: Response): Promise<void> {
   const sig = req.headers['stripe-signature'] as string
   const secret = process.env.STRIPE_WEBHOOK_SECRET!
@@ -29,6 +33,7 @@ export async function handleWebhook(req: Request, res: Response): Promise<void> 
     }
 
     const dashboardToken = crypto.randomBytes(24).toString('hex')
+    const pin = generatePin()
 
     const { data: operator, error } = await supabase
       .from('operators')
@@ -40,6 +45,7 @@ export async function handleWebhook(req: Request, res: Response): Promise<void> 
         plan,
         active: false,
         dashboard_token: dashboardToken,
+        pin,
         stripe_customer_id: session.customer as string,
         stripe_subscription_id: session.subscription as string,
         faq: '',
@@ -57,16 +63,19 @@ export async function handleWebhook(req: Request, res: Response): Promise<void> 
       return
     }
 
+    const baseUrl = process.env.BASE_URL ?? 'https://phone-agent-production-e8a7.up.railway.app'
     await sendEmail({
       to: email,
       subject: `You're in — Tour Agent is setting up your line`,
       html: `
         <p>Hi ${owner_name},</p>
         <p>Payment confirmed! We're setting up your dedicated phone line for <strong>${business_name}</strong>.</p>
+        <p><strong>Your dashboard PIN: ${pin}</strong> — you'll need this to log in.</p>
+        <p>Your dashboard: <a href="${baseUrl}/dashboard/${operator.id}">${baseUrl}/dashboard/${operator.id}</a></p>
         <p>Here's what happens next:</p>
         <ol>
           <li>We'll assign you a dedicated phone number (usually within a few hours).</li>
-          <li>You'll receive a second email with your dashboard link and line details.</li>
+          <li>You'll receive a second email with your line details.</li>
           <li>Forward that number to your existing business line, or start using it straight away.</li>
         </ol>
         <p>Any questions? Reply to this email or reach us at <a href="mailto:fun@bugme.travel">fun@bugme.travel</a>.</p>

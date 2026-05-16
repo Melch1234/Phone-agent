@@ -3,6 +3,10 @@ import { supabase } from '../src/lib/supabase'
 import { sendEmail } from '../src/lib/resend'
 import type { OnboardPayload } from '../src/types'
 
+function generatePin(): string {
+  return Math.floor(100000 + Math.random() * 900000).toString()
+}
+
 export async function handleOperators(req: Request, res: Response): Promise<void> {
   const body = req.body as OnboardPayload & { call_slots?: string[] }
 
@@ -13,6 +17,8 @@ export async function handleOperators(req: Request, res: Response): Promise<void
       return
     }
   }
+
+  const pin = generatePin()
 
   const { data: operator, error } = await supabase
     .from('operators')
@@ -25,6 +31,7 @@ export async function handleOperators(req: Request, res: Response): Promise<void
       faq: body.faq.trim(),
       greeting: body.greeting?.trim() || null,
       active: false,
+      pin,
     })
     .select()
     .single()

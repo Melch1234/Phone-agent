@@ -12,6 +12,7 @@ interface Operator {
   alert_phone: string
   twilio_number: string | null
   active: boolean
+  pin: string | null
   created_at: string
 }
 
@@ -91,7 +92,7 @@ function AdminContent() {
         <table style={s.table}>
           <thead>
             <tr>
-              {['Business', 'Owner', 'Email', 'Alert phone', 'Twilio number', 'Status', ''].map(h => (
+              {['Business', 'Owner', 'Email', 'Alert phone', 'Twilio number', 'PIN', 'Status', ''].map(h => (
                 <th key={h} style={s.th}>{h}</th>
               ))}
             </tr>
@@ -118,6 +119,7 @@ function AdminContent() {
                     )}
                   </div>
                 </td>
+                <td style={s.td} title="Dashboard PIN">{op.pin ?? '—'}</td>
                 <td style={s.td}><span style={s.badge(op.active)}>{op.active ? 'Active' : 'Inactive'}</span></td>
                 <td style={s.td}>
                   <button style={s.btn(op.active)} onClick={() => toggleActive(op)} disabled={saving === op.id}>
