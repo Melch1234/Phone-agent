@@ -38,6 +38,13 @@ export default async function DashboardPage({ params, searchParams }: Props) {
   const allLeads = leads ?? []
   const urgentCount = allCalls.filter((c: { urgent: boolean }) => c.urgent).length
 
+  const setupSteps = [
+    { label: 'Phone number assigned', done: !!operator.twilio_number },
+    { label: 'Greeting recorded', done: !!(operator.greeting?.trim()) },
+    { label: 'FAQ configured', done: !!(operator.faq?.trim()) },
+  ]
+  const setupComplete = setupSteps.every(s => s.done)
+
   return (
     <main style={{
       minHeight: '100vh', background: '#040d1f', padding: '2rem',
@@ -47,7 +54,35 @@ export default async function DashboardPage({ params, searchParams }: Props) {
       <h1 style={{ fontFamily: 'Fraunces, serif', fontSize: '1.8rem', fontWeight: 800, marginBottom: '.25rem' }}>
         {operator.business_name}
       </h1>
-      <p style={{ opacity: .45, fontSize: '.85rem', marginBottom: '2.5rem' }}>Last 7 days</p>
+      <p style={{ opacity: .45, fontSize: '.85rem', marginBottom: '2rem' }}>Last 7 days</p>
+
+      {!setupComplete && (
+        <div style={{
+          background: 'rgba(245,168,42,.08)', border: '1px solid rgba(245,168,42,.25)',
+          borderRadius: 14, padding: '1.25rem 1.5rem', marginBottom: '2rem',
+        }}>
+          <p style={{ fontWeight: 600, fontSize: '.9rem', marginBottom: '.75rem', color: '#f5a82a' }}>
+            Finish setting up your agent
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '.5rem' }}>
+            {setupSteps.map(step => (
+              <div key={step.label} style={{ display: 'flex', alignItems: 'center', gap: '.6rem', fontSize: '.88rem' }}>
+                <span style={{
+                  width: 18, height: 18, borderRadius: '50%', flexShrink: 0,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '.7rem',
+                  background: step.done ? '#22c55e' : 'rgba(255,255,255,.1)',
+                  color: step.done ? '#fff' : 'rgba(255,255,255,.3)',
+                }}>
+                  {step.done ? '✓' : '○'}
+                </span>
+                <span style={{ opacity: step.done ? .45 : 1, textDecoration: step.done ? 'line-through' : 'none' }}>
+                  {step.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '2.5rem' }}>
         {[
