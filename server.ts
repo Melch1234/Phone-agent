@@ -4,9 +4,10 @@ import { parse } from 'url'
 import next from 'next'
 import express from 'express'
 import cookieParser from 'cookie-parser'
+import helmet from 'helmet'
+import { rateLimit } from 'express-rate-limit'
 import { WebSocketServer } from 'ws'
 import { handleIncoming } from './api/incoming'
-import { handleOperators } from './api/operators'
 import { handleDeleteCall } from './api/calls'
 import { handleScrape } from './api/scrape'
 import { handleSettings } from './api/settings'
@@ -29,6 +30,8 @@ async function main() {
 
   const expressApp = express()
 
+  expressApp.use(helmet({ contentSecurityPolicy: false }))
+
   // Stripe webhook needs raw body before JSON middleware
   expressApp.post('/api/webhook', express.raw({ type: 'application/json' }), handleWebhook)
 
@@ -36,13 +39,17 @@ async function main() {
   expressApp.use(express.urlencoded({ extended: false }))
   expressApp.use(cookieParser())
 
+  // Rate limiters
+  const loginLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 10, standardHeaders: true, legacyHeaders: false })
+  const forgotPinLimiter = rateLimit({ windowMs: 60 * 60 * 1000, limit: 5, standardHeaders: true, legacyHeaders: false })
+  const checkoutLimiter = rateLimit({ windowMs: 60 * 60 * 1000, limit: 20, standardHeaders: true, legacyHeaders: false })
+
   expressApp.post('/api/auth/dashboard', handleDashboardAuth)
-  expressApp.post('/api/auth/login', handleLogin)
-  expressApp.post('/api/auth/forgot-pin', handleForgotPin)
+  expressApp.post('/api/auth/login', loginLimiter, handleLogin)
+  expressApp.post('/api/auth/forgot-pin', forgotPinLimiter, handleForgotPin)
   expressApp.get('/api/auth/admin', handleAdminAuth)
 
   expressApp.post('/api/incoming', handleIncoming)
-  expressApp.post('/api/operators', handleOperators)
   expressApp.delete('/api/calls', handleDeleteCall)
   expressApp.post('/api/scrape', handleScrape)
   expressApp.post('/api/settings', handleSettings)
@@ -50,7 +57,7 @@ async function main() {
   expressApp.get('/api/admin/operators', handleAdminOperators)
   expressApp.patch('/api/admin/operators', handleAdminOperators)
   expressApp.post('/api/contact', handleContact)
-  expressApp.post('/api/checkout', handleCheckout)
+  expressApp.post('/api/checkout', checkoutLimiter, handleCheckout)
 
   expressApp.all('/{*splat}', (req, res) => {
     const parsedUrl = parse(req.url!, true)

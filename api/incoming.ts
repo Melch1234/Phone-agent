@@ -1,8 +1,19 @@
 import { Request, Response } from 'express'
+import twilio from 'twilio'
 import { supabase } from '../src/lib/supabase'
 import { buildStreamTwiml, buildFallbackTwiml } from '../src/lib/twilio'
 
 export async function handleIncoming(req: Request, res: Response): Promise<void> {
+  const authToken = process.env.TWILIO_AUTH_TOKEN!
+  const signature = req.headers['x-twilio-signature'] as string ?? ''
+  const baseUrl = process.env.BASE_URL ?? 'https://phone-agent-production-e8a7.up.railway.app'
+  const url = `${baseUrl}/api/incoming`
+
+  if (!twilio.validateRequest(authToken, signature, url, req.body)) {
+    res.status(403).type('text/xml').send('<Response><Reject/></Response>')
+    return
+  }
+
   const toNumber: string = req.body.To || ''
   const fromNumber: string = req.body.From || 'unknown'
 
