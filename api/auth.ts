@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { supabase } from '../src/lib/supabase'
 import { sendEmail } from '../src/lib/resend'
+import { forgotPinEmail } from '../src/lib/email-templates'
 import crypto from 'crypto'
 
 const isProd = process.env.NODE_ENV === 'production'
@@ -85,13 +86,12 @@ export async function handleForgotPin(req: Request, res: Response): Promise<void
     await sendEmail({
       to: operator.email,
       subject: `Your new Tour Agent PIN`,
-      html: `
-        <p>Hi ${operator.owner_name},</p>
-        <p>Your new dashboard PIN for <strong>${operator.business_name}</strong> is:</p>
-        <p style="font-size: 2rem; font-weight: bold; letter-spacing: 0.3em;">${newPin}</p>
-        <p>Log in at: <a href="${baseUrl}/login">${baseUrl}/login</a></p>
-        <p>— The Tour Agent team</p>
-      `,
+      html: forgotPinEmail({
+        ownerName: operator.owner_name,
+        businessName: operator.business_name,
+        newPin,
+        loginUrl: `${baseUrl}/login`,
+      }),
     })
     console.log(`[forgot-pin] PIN email sent to ${operator.email}`)
   } catch (err) {

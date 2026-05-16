@@ -52,27 +52,18 @@ export async function handleAdminOperators(req: Request, res: Response): Promise
 
       if (op) {
         const { sendEmail } = await import('../src/lib/resend')
+        const { activationEmail } = await import('../src/lib/email-templates')
         const baseUrl = process.env.BASE_URL ?? 'https://phone-agent-production-e8a7.up.railway.app'
-        const dashboardUrl = `${baseUrl}/dashboard/${op.id}`
         await sendEmail({
           to: op.email,
           subject: `Your Tour Agent line is ready — ${twilio_number}`,
-          html: `
-            <p>Hi ${op.owner_name},</p>
-            <p>Great news — your dedicated AI phone line is live!</p>
-            <p><strong>Your number: ${twilio_number}</strong></p>
-            <p>Forward this number to your existing business line, or start using it straight away. Your AI agent is ready to answer calls 24/7.</p>
-            <p><strong>Next steps:</strong></p>
-            <ol>
-              <li>Log in to your <a href="${dashboardUrl}">dashboard</a> using your PIN: <strong>${op.pin}</strong></li>
-              <li>Set up your FAQ and greeting so the AI knows your tours.</li>
-              <li>Forward <strong>${twilio_number}</strong> to your business phone, or share it with guests directly.</li>
-              <li>Your overnight briefing email will arrive at 6am UTC each day.</li>
-            </ol>
-            <p>Bookmark your dashboard: <a href="${dashboardUrl}">${dashboardUrl}</a></p>
-            <p>Any questions? Reply to this email or reach us at <a href="mailto:fun@bugme.travel">fun@bugme.travel</a>.</p>
-            <p>— The Tour Agent team</p>
-          `,
+          html: activationEmail({
+            ownerName: op.owner_name,
+            businessName: op.business_name,
+            pin: op.pin,
+            twilioNumber: twilio_number,
+            dashboardUrl: `${baseUrl}/dashboard/${op.id}`,
+          }),
         }).catch(err => console.error('[admin] Failed to send activation email:', err))
       }
     }

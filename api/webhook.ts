@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { getStripe } from '../src/lib/stripe'
 import { supabase } from '../src/lib/supabase'
 import { sendEmail } from '../src/lib/resend'
+import { welcomeEmail } from '../src/lib/email-templates'
 import crypto from 'crypto'
 
 function generatePin(): string {
@@ -67,20 +68,12 @@ export async function handleWebhook(req: Request, res: Response): Promise<void> 
     await sendEmail({
       to: email,
       subject: `You're in — Tour Agent is setting up your line`,
-      html: `
-        <p>Hi ${owner_name},</p>
-        <p>Payment confirmed! We're setting up your dedicated phone line for <strong>${business_name}</strong>.</p>
-        <p><strong>Your dashboard PIN: ${pin}</strong> — you'll need this to log in.</p>
-        <p>Your dashboard: <a href="${baseUrl}/dashboard/${operator.id}">${baseUrl}/dashboard/${operator.id}</a></p>
-        <p>Here's what happens next:</p>
-        <ol>
-          <li>We'll assign you a dedicated phone number (usually within a few hours).</li>
-          <li>You'll receive a second email with your line details.</li>
-          <li>Forward that number to your existing business line, or start using it straight away.</li>
-        </ol>
-        <p>Any questions? Reply to this email or reach us at <a href="mailto:fun@bugme.travel">fun@bugme.travel</a>.</p>
-        <p>— The Tour Agent team</p>
-      `,
+      html: welcomeEmail({
+        ownerName: owner_name,
+        businessName: business_name,
+        pin,
+        dashboardUrl: `${baseUrl}/dashboard/${operator.id}`,
+      }),
     })
 
     console.log(`[webhook] Operator created: ${operator.id} (${business_name})`)
