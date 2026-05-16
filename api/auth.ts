@@ -77,17 +77,23 @@ export async function handleForgotPin(req: Request, res: Response): Promise<void
   await supabase.from('operators').update({ pin: newPin }).eq('id', operator.id)
 
   const baseUrl = process.env.BASE_URL ?? 'https://phone-agent-production-e8a7.up.railway.app'
-  await sendEmail({
-    to: operator.email,
-    subject: `Your new Tour Agent PIN`,
-    html: `
-      <p>Hi ${operator.owner_name},</p>
-      <p>Your new dashboard PIN for <strong>${operator.business_name}</strong> is:</p>
-      <p style="font-size: 2rem; font-weight: bold; letter-spacing: 0.3em;">${newPin}</p>
-      <p>Log in at: <a href="${baseUrl}/login">${baseUrl}/login</a></p>
-      <p>— The Tour Agent team</p>
-    `,
-  }).catch(err => console.error('[forgot-pin] Email failed:', err))
+  try {
+    await sendEmail({
+      to: operator.email,
+      subject: `Your new Tour Agent PIN`,
+      html: `
+        <p>Hi ${operator.owner_name},</p>
+        <p>Your new dashboard PIN for <strong>${operator.business_name}</strong> is:</p>
+        <p style="font-size: 2rem; font-weight: bold; letter-spacing: 0.3em;">${newPin}</p>
+        <p>Log in at: <a href="${baseUrl}/login">${baseUrl}/login</a></p>
+        <p>— The Tour Agent team</p>
+      `,
+    })
+    console.log(`[forgot-pin] PIN email sent to ${operator.email}`)
+  } catch (err) {
+    console.error('[forgot-pin] Email failed:', JSON.stringify(err))
+    console.error('[forgot-pin] to:', operator.email, 'from env:', process.env.RESEND_FROM_EMAIL)
+  }
 
   res.json({ ok: true })
 }
