@@ -194,11 +194,6 @@ export default function LandingV2() {
                 &ldquo;Do you run sunrise paddles on Sundays, and what&rsquo;s the meeting point?&rdquo;
               </p>
             </div>
-            <div className="v2-captured-card">
-              <div className="v2-captured-label">Captured</div>
-              <div className="v2-captured-name">Maya Chen · +61 4** *** 219</div>
-              <div className="v2-captured-detail">Sunrise tour · party of 4 · this Sun</div>
-            </div>
           </div>
         </div>
       </section>
