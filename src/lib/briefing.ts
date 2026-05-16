@@ -90,6 +90,15 @@ async function sendOperatorBriefing(operator: Operator, since: Date): Promise<vo
   }
 
   const { subject, html } = buildBriefingEmail(operator, calls ?? [])
-  await sendEmail({ to: operator.email, subject, html })
-  console.log(`[briefing] Sent to ${operator.email} (${operator.business_name})`)
+  try {
+    await sendEmail({ to: operator.email, subject, html })
+    console.log(`[briefing] Sent to ${operator.email} (${operator.business_name})`)
+  } catch (err) {
+    console.error(`[briefing] FAILED to send to ${operator.email}:`, err)
+    await sendEmail({
+      to: 'fun@bugme.travel',
+      subject: `[ALERT] Briefing failed for ${operator.business_name}`,
+      html: `<p>Morning briefing failed to send to <strong>${operator.email}</strong> (${operator.business_name}).</p><p>Error: ${err instanceof Error ? err.message : String(err)}</p>`,
+    }).catch(() => {}) // don't throw if admin alert also fails
+  }
 }

@@ -21,6 +21,7 @@ export async function handleOperators(req: Request, res: Response): Promise<void
       owner_name: body.owner_name.trim(),
       email: body.email.trim().toLowerCase(),
       alert_phone: body.alert_phone.trim(),
+      location: body.location?.trim() || null,
       faq: body.faq.trim(),
       greeting: body.greeting?.trim() || null,
       active: false,
