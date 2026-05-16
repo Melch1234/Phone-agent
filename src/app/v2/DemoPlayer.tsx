@@ -8,16 +8,15 @@ interface Line {
   startTime: number
 }
 
-// startTime values are placeholders — update after running scripts/generate-demo-audio.ts
 const TRANSCRIPT: Line[] = [
   { speaker: 'caller', text: "Hi, I'm trying to book a whale watching tour for this Saturday — I called earlier but no one picked up.", startTime: 0 },
-  { speaker: 'agent',  text: "Hey there! You've reached Island Adventures after hours. I'm the AI assistant — happy to help. Saturday whale watching, got it. How many people will be joining?", startTime: 0 },
-  { speaker: 'caller', text: "Just two of us, me and my wife.", startTime: 0 },
-  { speaker: 'agent',  text: "Perfect. Can I grab your name and a good number so the team can confirm your spot first thing tomorrow morning?", startTime: 0 },
-  { speaker: 'caller', text: "Sure — Mike Thompson, 555-234-7890.", startTime: 0 },
-  { speaker: 'agent',  text: "Got it, Mike. I've noted two guests for Saturday. Someone will call you back before 9 AM to confirm availability and take payment. Anything else tonight?", startTime: 0 },
-  { speaker: 'caller', text: "No, that's great. Thanks.", startTime: 0 },
-  { speaker: 'agent',  text: "Enjoy your evening, Mike. We'll be in touch tomorrow.", startTime: 0 },
+  { speaker: 'agent',  text: "Hey there! You've reached Island Adventures after hours. I'm the AI assistant — happy to help. Saturday whale watching, got it. How many people will be joining?", startTime: 6.90 },
+  { speaker: 'caller', text: "Just two of us, me and my wife.", startTime: 17.24 },
+  { speaker: 'agent',  text: "Perfect. Can I grab your name and a good number so the team can confirm your spot first thing tomorrow morning?", startTime: 19.68 },
+  { speaker: 'caller', text: "Sure — Mike Thompson, 555-234-7890.", startTime: 27.27 },
+  { speaker: 'agent',  text: "Got it, Mike. I've noted two guests for Saturday. Someone will call you back before 9 AM to confirm availability and take payment. Anything else tonight?", startTime: 31.68 },
+  { speaker: 'caller', text: "No, that's great. Thanks.", startTime: 41.84 },
+  { speaker: 'agent',  text: "Enjoy your evening, Mike. We'll be in touch tomorrow.", startTime: 43.81 },
 ]
 
 function fmt(s: number) {
