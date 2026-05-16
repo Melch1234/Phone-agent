@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import DemoPlayer from './DemoPlayer'
 import './v2.css'
 
 const MARQUEE_ITEMS = [
@@ -261,6 +262,20 @@ export default function LandingV2() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── DEMO CALL ── */}
+      <section id="v2-demo" className="v2-section">
+        <div className="v2-container" style={{ textAlign: 'center' }}>
+          <span className="v2-eyebrow" style={{ display: 'inline-block' }}>Hear it in action</span>
+          <h2 className="v2-display-md" style={{ marginTop: 20, maxWidth: 600, marginInline: 'auto' }}>
+            A real after-hours call
+          </h2>
+          <p className="v2-lead" style={{ marginTop: 16, maxWidth: 480, marginInline: 'auto' }}>
+            A visitor calls after hours trying to book a whale watching tour. The AI handles it — no hold music, no missed lead.
+          </p>
+          <DemoPlayer />
         </div>
       </section>
 
