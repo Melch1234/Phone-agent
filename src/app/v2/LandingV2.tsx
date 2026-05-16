@@ -321,7 +321,7 @@ export default function LandingV2() {
               One missed booking pays for the year.
             </h2>
             <p className="v2-lead" style={{ marginTop: 18, maxWidth: 540, marginInline: 'auto' }}>
-              Cancel any time. No setup fees. Start free for 14 days.
+              Cancel any time. No setup fees.
             </p>
           </div>
           <div className="v2-pricing-grid">
