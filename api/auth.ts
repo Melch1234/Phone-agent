@@ -49,11 +49,14 @@ export async function handleForgotPin(req: Request, res: Response): Promise<void
     return
   }
 
-  const { data: operator } = await supabase
+  const { data: rows } = await supabase
     .from('operators')
     .select('id, owner_name, email, business_name')
     .eq('email', email.toLowerCase().trim())
-    .single()
+    .order('created_at', { ascending: false })
+    .limit(1)
+
+  const operator = rows?.[0] ?? null
 
   // Always respond ok to prevent email enumeration
   if (!operator) {
