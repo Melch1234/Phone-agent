@@ -6,12 +6,14 @@ export default function OnboardSuccess() {
       fontFamily: 'Outfit, system-ui, sans-serif', color: '#f0e8d8',
     }}>
       <div style={{ maxWidth: 480 }}>
-        <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✓</div>
-        <h1 style={{ fontFamily: 'Fraunces, serif', fontSize: '2.2rem', fontWeight: 800, marginBottom: '1rem' }}>
-          Application received
+        <h1 style={{ fontFamily: 'Fraunces, serif', fontSize: '2.2rem', fontWeight: 800, marginBottom: '2rem' }}>
+          Application received.
         </h1>
-        <p style={{ opacity: .7, lineHeight: 1.7, marginBottom: '2rem' }}>
-          Thanks for applying. We&apos;ll review your details and reach out to you directly to discuss next steps.
+        <p style={{ lineHeight: 1.8, marginBottom: '1.5rem', color: '#f0e8d8' }}>
+          Thanks — we&apos;ve got your details. We&apos;ll be in touch within 24 hours to walk you through setup and get your line assigned.
+        </p>
+        <p style={{ lineHeight: 1.8, marginBottom: '2rem', color: '#f0e8d8' }}>
+          Keep an eye on your inbox. When your line is ready, you&apos;ll get an email with your dashboard link and phone number.
         </p>
         <a href="/" style={{
           background: 'rgba(255,255,255,.08)', color: '#f0e8d8',
