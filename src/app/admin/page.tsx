@@ -42,25 +42,33 @@ function AdminContent() {
   const [editing, setEditing] = useState<Record<string, string>>({})
   const [saving, setSaving] = useState<string | null>(null)
   const [webhookUrl, setWebhookUrl] = useState('')
+  const [needsLogin, setNeedsLogin] = useState(false)
+  const [tokenInput, setTokenInput] = useState('')
 
   useEffect(() => {
     setWebhookUrl(`${window.location.origin}/api/incoming`)
   }, [])
 
   useEffect(() => {
-    // If token is in URL, redirect to auth endpoint to set cookie + strip token from URL
     const token = params.get('token')
     if (token) {
       window.location.replace(`/api/auth/admin?token=${encodeURIComponent(token)}`)
       return
     }
 
-    // No URL token — rely on cookie being sent automatically
     fetch('/api/admin/operators')
-      .then(r => r.json())
-      .then(data => { setOperators(Array.isArray(data) ? data : []); setLoading(false) })
+      .then(r => {
+        if (r.status === 403) { setNeedsLogin(true); setLoading(false); return null }
+        return r.json()
+      })
+      .then(data => { if (Array.isArray(data)) { setOperators(data); setLoading(false) } })
       .catch(() => setLoading(false))
   }, [params])
+
+  function submitLogin(e: React.FormEvent) {
+    e.preventDefault()
+    window.location.href = `/api/auth/admin?token=${encodeURIComponent(tokenInput)}`
+  }
 
   async function save(op: Operator) {
     setSaving(op.id)
@@ -85,7 +93,25 @@ function AdminContent() {
   }
 
   if (loading) return <main style={s.wrap}><p style={{ opacity: .4 }}>Loading…</p></main>
-  if (!operators.length) return <main style={s.wrap}><p style={{ opacity: .4 }}>No operators or invalid token.</p></main>
+
+  if (needsLogin) return (
+    <main style={{ ...s.wrap, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <form onSubmit={submitLogin} style={{ width: '100%', maxWidth: 360, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <h1 style={s.h1}>Ringo Admin</h1>
+        <input
+          type="password"
+          autoFocus
+          value={tokenInput}
+          onChange={e => setTokenInput(e.target.value)}
+          placeholder="Admin token"
+          style={{ padding: '10px 14px', borderRadius: 8, border: '1px solid rgba(255,255,255,.15)', background: 'rgba(255,255,255,.07)', color: '#f0e8d8', fontSize: '1rem' }}
+        />
+        <button type="submit" style={{ ...s.btn(true), padding: '10px', fontSize: '.9rem', borderRadius: 8 }}>
+          Enter
+        </button>
+      </form>
+    </main>
+  )
 
   return (
     <main style={s.wrap}>
