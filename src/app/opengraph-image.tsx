@@ -24,7 +24,7 @@ export default function OGImage() {
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
         />
 
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(4,13,31,0.88) 0%, rgba(4,13,31,0.65) 100%)', display: 'flex' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(4,13,31,0.93) 0%, rgba(4,13,31,0.78) 100%)', display: 'flex' }} />
 
         <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', padding: '80px 100px', width: '100%', height: '100%' }}>
 
