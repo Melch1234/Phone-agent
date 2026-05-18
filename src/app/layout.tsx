@@ -13,11 +13,13 @@ export const metadata: Metadata = {
     url: 'https://ringo.travel',
     siteName: 'Ringo',
     type: 'website',
+    images: [{ url: 'https://ringo.travel/opengraph-image', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Ringo — Never miss an after-hours call again',
     description: 'Your guests don\'t keep office hours. Now you don\'t have to either.',
+    images: ['https://ringo.travel/opengraph-image'],
   },
 }
 
