@@ -6,6 +6,19 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'Ringo — Never miss an after-hours call again',
   description: 'Ringo answers your phone after hours, captures every booking enquiry, and delivers a morning briefing to your team. Built for tour operators.',
+  metadataBase: new URL('https://ringo.travel'),
+  openGraph: {
+    title: 'Ringo — Never miss an after-hours call again',
+    description: 'Your guests don\'t keep office hours. Now you don\'t have to either.',
+    url: 'https://ringo.travel',
+    siteName: 'Ringo',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Ringo — Never miss an after-hours call again',
+    description: 'Your guests don\'t keep office hours. Now you don\'t have to either.',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
