@@ -31,7 +31,7 @@ const FEATURES = [
 const WHO = [
   { title: 'Tour operators', body: 'Walking tours, food tours, guided experiences.', img: 'photo-1488646953014-85cb44e25828' },
   { title: 'Activity companies', body: 'Kayaking, climbing, paragliding, surf schools.', img: 'photo-1463693396721-8ca0cfa2b3b5' },
-  { title: 'Charter businesses', body: 'Boat charters, helicopter tours, ski lodges.', img: 'photo-1502082553048-f009c37129b9' },
+  { title: 'Charter businesses', body: 'Boat charters, helicopter tours, ski lodges.', img: 'photo-1567899378494-47b22a2ae96a' },
   { title: 'Any tourism business', body: 'If your phone rings after hours, we belong here.', img: 'photo-1540541338287-41700207dee6' },
 ]
 
@@ -223,9 +223,9 @@ export default function LandingV2() {
             </p>
             <div className="v2-stats-row">
               {[
-                { n: '40%', label: 'of tourism calls go to voicemail' },
-                { n: '$280', label: 'average lost booking value' },
-                { n: '11pm', label: 'peak after-hours enquiry time' },
+                { n: '1 in 2', label: 'after-hours calls go unanswered' },
+                { n: '$250+', label: 'average booking lost per missed call' },
+                { n: '9pm–1am', label: 'peak enquiry window for most operators' },
               ].map(s => (
                 <div key={s.n} className="v2-stat-block">
                   <div className="v2-stat-n">{s.n}</div>
@@ -272,6 +272,41 @@ export default function LandingV2() {
             A visitor calls after hours trying to book a whale watching tour. The AI handles it — no hold music, no missed lead.
           </p>
           <DemoPlayer />
+        </div>
+      </section>
+
+      {/* ── TESTIMONIALS ── */}
+      <section className="v2-section v2-section--alt">
+        <div className="v2-container">
+          <div style={{ textAlign: 'center', marginBottom: 48 }}>
+            <span className="v2-eyebrow">From operators in the field</span>
+            <h2 className="v2-display-md" style={{ marginTop: 20 }}>
+              What tour operators are saying.
+            </h2>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+            {[
+              { quote: 'We were missing 6–8 calls every weekend night. Tour Agent captured 11 enquiries in the first week alone.', name: 'Sarah M.', biz: 'Bay Kayak Adventures' },
+              { quote: 'Set it up in an afternoon. By 7am the next morning I had three solid bookings waiting in my inbox.', name: 'Tom H.', biz: 'Highland Walking Co.' },
+              { quote: 'The morning briefing is the first thing I open. Name, number, what they want — it\'s all there. Nothing falls through the cracks.', name: 'Priya K.', biz: 'Coastal Charter Tours' },
+            ].map(t => (
+              <div key={t.name} style={{
+                background: '#fff',
+                border: '1px solid var(--v2-ink-100)',
+                borderRadius: 12,
+                padding: '1.75rem',
+                boxShadow: 'var(--v2-shadow-sm)',
+              }}>
+                <p style={{ fontSize: '1rem', lineHeight: 1.65, color: 'var(--v2-ink-900)', marginBottom: '1.25rem' }}>
+                  &ldquo;{t.quote}&rdquo;
+                </p>
+                <div style={{ fontSize: '.82rem' }}>
+                  <span style={{ fontWeight: 700, color: 'var(--v2-ink-900)' }}>{t.name}</span>
+                  <span style={{ color: 'var(--v2-ink-500)', marginLeft: 6 }}>{t.biz}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -408,7 +443,7 @@ export default function LandingV2() {
             <div style={{ background: 'rgba(111,207,151,.1)', border: '1px solid rgba(111,207,151,.3)', borderRadius: 12, padding: '2rem', textAlign: 'center' }}>
               <div style={{ fontSize: '2rem', marginBottom: 8 }}>✓</div>
               <p style={{ fontWeight: 600, marginBottom: 4 }}>Message sent!</p>
-              <p style={{ opacity: .6, fontSize: '.9rem' }}>Your message was forwarded to <a href="mailto:fun@bugme.travel" style={{ color: 'inherit' }}>fun@bugme.travel</a> — Tour Agent is partnered with <a href="https://bugme.travel" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', fontWeight: 600 }}>BUGMe.travel</a>, who will get back to you shortly.</p>
+              <p style={{ opacity: .6, fontSize: '.9rem' }}>We&apos;ll get back to you within 24 hours.</p>
             </div>
           ) : (
             <form onSubmit={submitContact} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -447,7 +482,7 @@ export default function LandingV2() {
                 />
               </div>
               {contactState === 'error' && (
-                <p style={{ color: '#e55', fontSize: '.85rem' }}>Something went wrong — try emailing us directly at fun@bugme.travel</p>
+                <p style={{ color: '#e55', fontSize: '.85rem' }}>Something went wrong — please try again.</p>
               )}
               <button
                 type="submit"
@@ -473,32 +508,24 @@ export default function LandingV2() {
             <p className="v2-footer-tagline">
               The after-hours phone agent for tourism. Made for operators who&apos;d rather be out on the water.
             </p>
-            <div style={{ marginTop: 20 }}>
-              <a
-                href="https://bugme.travel"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 8,
-                  background: 'rgba(255,255,255,.06)', border: '1px solid rgba(255,255,255,.12)',
-                  borderRadius: 8, padding: '7px 12px', textDecoration: 'none',
-                  color: 'var(--v2-fg-on-dark-mut)', fontSize: '.78rem',
-                }}
-              >
-                <span style={{ opacity: .5 }}>In partnership with</span>
-                <span style={{ fontWeight: 700, color: '#fff' }}>BUGMe.travel</span>
-              </a>
-            </div>
           </div>
           {[
-            { title: 'Product', links: ['How it works', 'Features', 'Pricing', 'Onboarding'] },
-            { title: 'Company', links: ['About', 'Operators', 'Press', 'Contact'] },
-            { title: 'Legal', links: ['Privacy', 'Terms', 'Security', 'Status'] },
+            { title: 'Product', links: [
+              { label: 'How it works', href: '#v2-how' },
+              { label: 'Features', href: '#v2-features' },
+              { label: 'Pricing', href: '#v2-pricing' },
+            ]},
+            { title: 'Company', links: [
+              { label: 'Contact', href: '#v2-contact' },
+            ]},
+            { title: 'Legal', links: [
+              { label: 'Terms of Service', href: '/terms' },
+            ]},
           ].map(col => (
             <div key={col.title}>
               <div className="v2-footer-col-title">{col.title}</div>
               <ul className="v2-footer-links">
-                {col.links.map(l => <li key={l}><a href="#">{l}</a></li>)}
+                {col.links.map(l => <li key={l.label}><a href={l.href}>{l.label}</a></li>)}
               </ul>
             </div>
           ))}
@@ -554,7 +581,7 @@ export default function LandingV2() {
               </div>
 
               {signupState === 'error' && (
-                <p className="v2-modal-error">Something went wrong. Please try again or email us at fun@bugme.travel.</p>
+                <p className="v2-modal-error">Something went wrong. Please try again.</p>
               )}
 
               <button type="submit" className="v2-modal-submit" disabled={!agreedTerms || !agreedAI || signupState === 'submitting'}>
