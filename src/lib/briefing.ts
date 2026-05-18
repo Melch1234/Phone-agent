@@ -11,7 +11,7 @@ export function buildBriefingEmail(
   if (calls.length === 0) {
     return {
       subject: `Quiet night — no calls [${operator.business_name}]`,
-      html: `<p>Hi ${operator.owner_name},</p><p>No calls came in overnight. Your agent is running and ready for tonight.</p><p><a href="${baseUrl}/dashboard/${operator.id}?token=${operator.dashboard_token}">View dashboard</a></p>`,
+      html: `<p>Hi ${operator.owner_name},</p><p>No calls came in overnight. Your agent is running and ready for tonight.</p><p><a href="${baseUrl}/login">View dashboard</a></p>`,
     }
   }
 
@@ -39,7 +39,7 @@ export function buildBriefingEmail(
     <p>Here's what happened overnight for <strong>${operator.business_name}</strong>:</p>
     <h2 style="margin:24px 0 8px;">Calls (${calls.length})</h2>
     ${callRows}
-    <p style="margin-top:24px;"><a href="${baseUrl}/dashboard/${operator.id}?token=${operator.dashboard_token}" style="background:#e8820c;color:#fff;padding:10px 20px;border-radius:24px;text-decoration:none;">View full dashboard</a></p>
+    <p style="margin-top:24px;"><a href="${baseUrl}/login" style="background:#e8820c;color:#fff;padding:10px 20px;border-radius:24px;text-decoration:none;">View full dashboard</a></p>
   `
 
   return { subject, html }

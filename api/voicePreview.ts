@@ -6,7 +6,7 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 const ALLOWED_VOICES = ['alloy', 'ash', 'coral', 'echo', 'sage', 'shimmer']
 
 function isAllowedVoice(v: string) {
-  return ALLOWED_VOICES.includes(v) || v.startsWith('pmpt_')
+  return ALLOWED_VOICES.includes(v)
 }
 
 export async function handleVoicePreview(req: Request, res: Response): Promise<void> {

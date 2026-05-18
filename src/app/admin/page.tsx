@@ -41,6 +41,11 @@ function AdminContent() {
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState<Record<string, string>>({})
   const [saving, setSaving] = useState<string | null>(null)
+  const [webhookUrl, setWebhookUrl] = useState('')
+
+  useEffect(() => {
+    setWebhookUrl(`${window.location.origin}/api/incoming`)
+  }, [])
 
   useEffect(() => {
     // If token is in URL, redirect to auth endpoint to set cookie + strip token from URL
@@ -86,7 +91,7 @@ function AdminContent() {
     <main style={s.wrap}>
       <h1 style={s.h1}>Operators</h1>
       <p style={{ opacity: .35, fontSize: '.78rem', marginBottom: '1.5rem' }}>
-        Webhook URL for all Twilio numbers: <code>https://phone-agent-production-e8a7.up.railway.app/api/incoming</code>
+        Webhook URL for all Twilio numbers: <code>{webhookUrl}</code>
       </p>
       <div style={{ overflowX: 'auto' }}>
         <table style={s.table}>
