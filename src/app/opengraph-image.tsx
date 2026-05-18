@@ -24,7 +24,7 @@ export default function OGImage() {
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
         />
 
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to left, rgba(4,13,31,0.95) 0%, rgba(4,13,31,0.55) 100%)', display: 'flex' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to left, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0.15) 100%)', display: 'flex' }} />
 
         <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center', padding: '80px 100px', width: '100%', height: '100%' }}>
 
@@ -48,7 +48,7 @@ export default function OGImage() {
           <div style={{
             fontSize: 128,
             fontWeight: 900,
-            color: '#f0e8d8',
+            color: '#0a0a0a',
             letterSpacing: '-0.04em',
             lineHeight: 1,
             marginBottom: 28,
@@ -58,7 +58,7 @@ export default function OGImage() {
 
           <div style={{
             fontSize: 30,
-            color: 'rgba(240,232,216,0.75)',
+            color: 'rgba(10,10,10,0.7)',
             lineHeight: 1.45,
             maxWidth: 620,
             display: 'flex',
@@ -71,7 +71,7 @@ export default function OGImage() {
             position: 'absolute',
             bottom: 56,
             left: 100,
-            color: 'rgba(240,232,216,0.35)',
+            color: 'rgba(10,10,10,0.35)',
             fontSize: 20,
             fontWeight: 500,
             letterSpacing: '0.04em',
