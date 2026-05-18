@@ -1,14 +1,14 @@
 import { ImageResponse } from 'next/og'
+import { readFileSync } from 'fs'
+import { join } from 'path'
 
 export const runtime = 'nodejs'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-export default async function OGImage() {
-  const imgBuffer = await fetch(
-    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&h=630&fit=crop&auto=format&q=80'
-  ).then(r => r.arrayBuffer())
-  const imgData = `data:image/jpeg;base64,${Buffer.from(imgBuffer).toString('base64')}`
+export default function OGImage() {
+  const imgBuffer = readFileSync(join(process.cwd(), 'public', 'og-bg.jpg'))
+  const imgData = `data:image/jpeg;base64,${imgBuffer.toString('base64')}`
 
   return new ImageResponse(
     (
