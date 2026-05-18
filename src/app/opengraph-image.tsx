@@ -1,15 +1,11 @@
 import { ImageResponse } from 'next/og'
-import { readFileSync } from 'fs'
-import { join } from 'path'
+import { OG_BG } from '../lib/og-bg'
 
 export const runtime = 'nodejs'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
 export default function OGImage() {
-  const imgBuffer = readFileSync(join(process.cwd(), 'public', 'og-bg.jpg'))
-  const imgData = `data:image/jpeg;base64,${imgBuffer.toString('base64')}`
-
   return new ImageResponse(
     (
       <div
@@ -22,20 +18,16 @@ export default function OGImage() {
           fontFamily: 'system-ui, -apple-system, sans-serif',
         }}
       >
-        {/* Background photo */}
         <img
-          src={imgData}
+          src={OG_BG}
           alt=""
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
         />
 
-        {/* Dark overlay */}
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(4,13,31,0.88) 0%, rgba(4,13,31,0.65) 100%)', display: 'flex' }} />
 
-        {/* Content */}
         <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', padding: '80px 100px', width: '100%', height: '100%' }}>
 
-          {/* Badge */}
           <div style={{
             display: 'flex',
             alignItems: 'center',
@@ -53,7 +45,6 @@ export default function OGImage() {
             After-hours phone agent for tourism
           </div>
 
-          {/* Brand name */}
           <div style={{
             fontSize: 128,
             fontWeight: 900,
@@ -65,7 +56,6 @@ export default function OGImage() {
             Ringo.
           </div>
 
-          {/* Tagline */}
           <div style={{
             fontSize: 30,
             color: 'rgba(240,232,216,0.75)',
@@ -77,7 +67,6 @@ export default function OGImage() {
             <span style={{ color: '#F26A1F', marginLeft: 8 }}>Now you don't have to either.</span>
           </div>
 
-          {/* Domain */}
           <div style={{
             position: 'absolute',
             bottom: 56,
