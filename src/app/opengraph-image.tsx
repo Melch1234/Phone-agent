@@ -4,84 +4,93 @@ export const runtime = 'nodejs'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-export default function OGImage() {
+export default async function OGImage() {
+  const imgBuffer = await fetch(
+    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&h=630&fit=crop&auto=format&q=80'
+  ).then(r => r.arrayBuffer())
+  const imgData = `data:image/jpeg;base64,${Buffer.from(imgBuffer).toString('base64')}`
+
   return new ImageResponse(
     (
       <div
         style={{
           width: '100%',
           height: '100%',
-          background: '#040d1f',
           display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          justifyContent: 'center',
-          padding: '80px 100px',
           position: 'relative',
           overflow: 'hidden',
           fontFamily: 'system-ui, -apple-system, sans-serif',
         }}
       >
-        {/* Decorative circles */}
-        <div style={{ position: 'absolute', right: -120, top: -120, width: 640, height: 640, borderRadius: '50%', border: '1.5px solid rgba(242,106,31,0.2)', display: 'flex' }} />
-        <div style={{ position: 'absolute', right: -60, top: -60, width: 440, height: 440, borderRadius: '50%', border: '1px solid rgba(242,106,31,0.12)', display: 'flex' }} />
-        <div style={{ position: 'absolute', right: 0, top: 0, width: 260, height: 260, borderRadius: '50%', border: '1px solid rgba(242,106,31,0.08)', display: 'flex' }} />
+        {/* Background photo */}
+        {/* @ts-expect-error ImageResponse img */}
+        <img
+          src={imgData}
+          alt=""
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+        />
 
-        {/* Badge */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          background: 'rgba(242,106,31,0.12)',
-          border: '1px solid rgba(242,106,31,0.35)',
-          borderRadius: 100,
-          padding: '8px 22px',
-          marginBottom: 44,
-          color: '#F26A1F',
-          fontSize: 15,
-          fontWeight: 700,
-          letterSpacing: '0.12em',
-          textTransform: 'uppercase',
-        }}>
-          After-hours phone agent · for tourism
-        </div>
+        {/* Dark overlay */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(4,13,31,0.88) 0%, rgba(4,13,31,0.65) 100%)', display: 'flex' }} />
 
-        {/* Brand name */}
-        <div style={{
-          fontSize: 128,
-          fontWeight: 900,
-          color: '#f0e8d8',
-          letterSpacing: '-0.04em',
-          lineHeight: 1,
-          marginBottom: 28,
-        }}>
-          Ringo.
-        </div>
+        {/* Content */}
+        <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', padding: '80px 100px', width: '100%', height: '100%' }}>
 
-        {/* Tagline */}
-        <div style={{
-          fontSize: 30,
-          color: 'rgba(240,232,216,0.6)',
-          lineHeight: 1.45,
-          maxWidth: 600,
-          display: 'flex',
-          flexWrap: 'wrap',
-        }}>
-          Your guests don&apos;t keep office hours.&nbsp;
-          <span style={{ color: '#F26A1F' }}>Now you don&apos;t have to either.</span>
-        </div>
+          {/* Badge */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            background: 'rgba(242,106,31,0.15)',
+            border: '1px solid rgba(242,106,31,0.4)',
+            borderRadius: 100,
+            padding: '8px 22px',
+            marginBottom: 44,
+            color: '#F26A1F',
+            fontSize: 15,
+            fontWeight: 700,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+          }}>
+            After-hours phone agent for tourism
+          </div>
 
-        {/* Domain */}
-        <div style={{
-          position: 'absolute',
-          bottom: 56,
-          right: 100,
-          color: 'rgba(240,232,216,0.25)',
-          fontSize: 20,
-          fontWeight: 500,
-          letterSpacing: '0.04em',
-          display: 'flex',
-        }}>
-          ringo.travel
+          {/* Brand name */}
+          <div style={{
+            fontSize: 128,
+            fontWeight: 900,
+            color: '#f0e8d8',
+            letterSpacing: '-0.04em',
+            lineHeight: 1,
+            marginBottom: 28,
+          }}>
+            Ringo.
+          </div>
+
+          {/* Tagline */}
+          <div style={{
+            fontSize: 30,
+            color: 'rgba(240,232,216,0.75)',
+            lineHeight: 1.45,
+            maxWidth: 620,
+            display: 'flex',
+          }}>
+            Your guests don't keep office hours.{' '}
+            <span style={{ color: '#F26A1F', marginLeft: 8 }}>Now you don't have to either.</span>
+          </div>
+
+          {/* Domain */}
+          <div style={{
+            position: 'absolute',
+            bottom: 56,
+            right: 100,
+            color: 'rgba(240,232,216,0.35)',
+            fontSize: 20,
+            fontWeight: 500,
+            letterSpacing: '0.04em',
+            display: 'flex',
+          }}>
+            ringo.travel
+          </div>
         </div>
       </div>
     ),
