@@ -64,7 +64,7 @@ export default function OGImage() {
             display: 'flex',
           }}>
             Your guests don't keep office hours.{' '}
-            <span style={{ color: '#F26A1F', marginLeft: 8 }}>Now you don't have to either.</span>
+            <span style={{ color: '#0a0a0a', marginLeft: 8 }}>Now you don't have to either.</span>
           </div>
 
           <div style={{
