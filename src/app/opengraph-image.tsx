@@ -23,7 +23,6 @@ export default async function OGImage() {
         }}
       >
         {/* Background photo */}
-        {/* @ts-expect-error ImageResponse img */}
         <img
           src={imgData}
           alt=""
