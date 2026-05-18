@@ -85,7 +85,7 @@ export async function handleForgotPin(req: Request, res: Response): Promise<void
   try {
     await sendEmail({
       to: operator.email,
-      subject: `Your new Tour Agent PIN`,
+      subject: `Your new Ringo PIN`,
       html: forgotPinEmail({
         ownerName: operator.owner_name,
         businessName: operator.business_name,

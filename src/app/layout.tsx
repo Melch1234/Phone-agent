@@ -4,8 +4,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Tour Agent AI — Never miss an after-hours call again',
-  description: 'AI voice agent for adventure tour operators. Answers calls 24/7, captures leads, and delivers a morning briefing to your team.',
+  title: 'Ringo — Never miss an after-hours call again',
+  description: 'Ringo answers your phone after hours, captures every booking enquiry, and delivers a morning briefing to your team. Built for tour operators.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

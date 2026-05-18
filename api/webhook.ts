@@ -67,7 +67,7 @@ export async function handleWebhook(req: Request, res: Response): Promise<void> 
     const baseUrl = process.env.BASE_URL ?? 'https://phone-agent-production-e8a7.up.railway.app'
     await sendEmail({
       to: email,
-      subject: `You're in — Tour Agent is setting up your line`,
+      subject: `You're in — Ringo is setting up your line`,
       html: welcomeEmail({
         ownerName: owner_name,
         businessName: business_name,

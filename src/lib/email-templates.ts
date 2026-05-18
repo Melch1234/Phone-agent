@@ -19,7 +19,7 @@ function base(body: string): string {
               <td style="width:32px;height:32px;background:#4f8ef7;border-radius:50%;text-align:center;vertical-align:middle;">
                 <span style="color:#ffffff;font-weight:800;font-size:15px;line-height:32px;display:block;">T</span>
               </td>
-              <td style="padding-left:10px;color:#ffffff;font-weight:700;font-size:15px;letter-spacing:0.3px;">Tour Agent</td>
+              <td style="padding-left:10px;color:#ffffff;font-weight:700;font-size:15px;letter-spacing:0.3px;">Ringo</td>
             </tr></table>
           </td>
         </tr>
@@ -35,7 +35,7 @@ function base(body: string): string {
         <tr>
           <td style="background:#f8f9fa;border-top:1px solid #eeeeee;padding:14px 32px;border-radius:0 0 8px 8px;">
             <p style="margin:0;font-size:11px;color:#999999;line-height:1.6;">
-              Tour Agent &nbsp;·&nbsp; Questions? Email us any time at
+              Ringo &nbsp;·&nbsp; Questions? Email us any time at
               <a href="mailto:${SUPPORT_EMAIL}" style="color:#4f8ef7;text-decoration:none;">${SUPPORT_EMAIL}</a>
             </p>
           </td>

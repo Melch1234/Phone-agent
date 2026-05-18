@@ -56,7 +56,7 @@ export async function handleAdminOperators(req: Request, res: Response): Promise
         const baseUrl = process.env.BASE_URL ?? 'https://phone-agent-production-e8a7.up.railway.app'
         await sendEmail({
           to: op.email,
-          subject: `Your Tour Agent line is ready — ${twilio_number}`,
+          subject: `Your Ringo line is ready — ${twilio_number}`,
           html: activationEmail({
             ownerName: op.owner_name,
             businessName: op.business_name,

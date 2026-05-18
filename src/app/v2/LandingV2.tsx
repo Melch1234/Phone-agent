@@ -16,7 +16,7 @@ const MARQUEE_ITEMS = [
 ]
 
 const STEPS = [
-  { n: '01', title: 'They call.', body: 'Tour Agent picks up before the second ring — landline or mobile, your existing number forwarded.' },
+  { n: '01', title: 'They call.', body: 'Ringo picks up before the second ring — landline or mobile, your existing number forwarded.' },
   { n: '02', title: 'It listens, answers, captures.', body: 'Trained on your FAQ. Answers questions about tours and pricing in your voice. Takes name, number, and what they\'re after.' },
   { n: '03', title: 'You wake up sorted.', body: 'Every enquiry captured overnight. A clean summary lands in your inbox at 7am — names, numbers, and what they\'re after.' },
 ]
@@ -134,7 +134,7 @@ export default function LandingV2() {
       <header className={`v2-header${scrolled ? ' v2-header--scrolled' : ''}`}>
         <a href="/v2" className="v2-wordmark">
           <CompassMark />
-          Tour Agent
+          Ringo
         </a>
         <nav className="v2-nav">
           <a href="#v2-how">How it works</a>
@@ -160,7 +160,7 @@ export default function LandingV2() {
               <span className="v2-hero-gradient">Now you don&apos;t<br />have to either.</span>
             </h1>
             <p className="v2-lead" style={{ maxWidth: 480, marginBottom: 40 }}>
-              Tour Agent answers the phone when you can&apos;t. It takes the booking enquiry and emails your team a clean summary every morning.
+              Ringo answers the phone when you can&apos;t. It takes the booking enquiry and emails your team a clean summary every morning.
             </p>
             <div className="v2-hero-actions">
               <a href="#v2-pricing" className="v2-btn v2-btn--primary v2-btn--lg">
@@ -286,7 +286,7 @@ export default function LandingV2() {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
             {[
-              { quote: 'We were missing 6–8 calls every weekend night. Tour Agent captured 11 enquiries in the first week alone.', name: 'Sarah M.', biz: 'Bay Kayak Adventures' },
+              { quote: 'We were missing 6–8 calls every weekend night. Ringo captured 11 enquiries in the first week alone.', name: 'Sarah M.', biz: 'Bay Kayak Adventures' },
               { quote: 'Set it up in an afternoon. By 7am the next morning I had three solid bookings waiting in my inbox.', name: 'Tom H.', biz: 'Highland Walking Co.' },
               { quote: 'The morning briefing is the first thing I open. Name, number, what they want — it\'s all there. Nothing falls through the cracks.', name: 'Priya K.', biz: 'Coastal Charter Tours' },
             ].map(t => (
@@ -503,7 +503,7 @@ export default function LandingV2() {
           <div>
             <div className="v2-footer-brand">
               <CompassMark />
-              Tour Agent
+              Ringo
             </div>
             <p className="v2-footer-tagline">
               The after-hours phone agent for tourism. Made for operators who&apos;d rather be out on the water.
@@ -531,7 +531,7 @@ export default function LandingV2() {
           ))}
         </div>
         <div className="v2-container v2-footer-base">
-          <span>© 2026 Tour Agent.</span>
+          <span>© 2026 Ringo.</span>
         </div>
       </footer>
 
@@ -575,7 +575,7 @@ export default function LandingV2() {
                 <label className="v2-modal-check">
                   <input type="checkbox" checked={agreedAI} onChange={e => setAgreedAI(e.target.checked)} />
                   <span>
-                    I understand Tour Agent uses AI technology that may occasionally make errors or require an initial training period to accurately represent my tours and policies. I accept responsibility for reviewing and correcting responses during onboarding.
+                    I understand Ringo uses AI technology that may occasionally make errors or require an initial training period to accurately represent my tours and policies. I accept responsibility for reviewing and correcting responses during onboarding.
                   </span>
                 </label>
               </div>

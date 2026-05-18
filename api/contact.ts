@@ -12,7 +12,7 @@ export async function handleContact(req: Request, res: Response): Promise<void> 
   try {
     await sendEmail({
       to: 'fun@bugme.travel',
-      subject: `Tour Agent enquiry from ${name}`,
+      subject: `Ringo enquiry from ${name}`,
       html: `
         <h2>New contact form submission</h2>
         <p><strong>Name:</strong> ${name}</p>

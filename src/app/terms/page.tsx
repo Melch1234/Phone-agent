@@ -6,25 +6,25 @@ export default function TermsPage() {
 
       <section style={{ marginBottom: 32 }}>
         <h2 style={{ fontSize: '1.2rem', fontWeight: 600, marginBottom: 12 }}>1. Subscription & Billing</h2>
-        <p>Tour Agent is offered as a monthly subscription. Your subscription begins on the date of payment and renews automatically each month. You authorise us to charge your payment method on a recurring monthly basis.</p>
+        <p>Ringo is offered as a monthly subscription. Your subscription begins on the date of payment and renews automatically each month. You authorise us to charge your payment method on a recurring monthly basis.</p>
         <p style={{ marginTop: 12 }}>You may cancel your subscription at any time. Cancellation takes effect at the end of your current billing period — you retain full access until that date and will not be charged again after cancellation.</p>
         <p style={{ marginTop: 12 }}>No refunds are issued for partial months.</p>
       </section>
 
       <section style={{ marginBottom: 32 }}>
         <h2 style={{ fontSize: '1.2rem', fontWeight: 600, marginBottom: 12 }}>2. AI Service Disclaimer</h2>
-        <p>Tour Agent uses artificial intelligence (AI) technology to handle phone calls, answer customer enquiries, and capture leads on your behalf. By subscribing, you acknowledge and agree to the following:</p>
+        <p>Ringo uses artificial intelligence (AI) technology to handle phone calls, answer customer enquiries, and capture leads on your behalf. By subscribing, you acknowledge and agree to the following:</p>
         <ul style={{ marginTop: 12, paddingLeft: 24 }}>
           <li style={{ marginBottom: 8 }}>The AI may occasionally provide inaccurate, incomplete, or outdated information to callers. It is not infallible.</li>
           <li style={{ marginBottom: 8 }}>The AI requires an initial training period during which its responses may not fully reflect your specific tours, pricing, or policies. You are responsible for reviewing and correcting its configuration during this period.</li>
-          <li style={{ marginBottom: 8 }}>Tour Agent is not liable for any missed bookings, lost revenue, or customer dissatisfaction resulting from AI errors.</li>
+          <li style={{ marginBottom: 8 }}>Ringo is not liable for any missed bookings, lost revenue, or customer dissatisfaction resulting from AI errors.</li>
           <li style={{ marginBottom: 8 }}>You are responsible for ensuring that the information provided to train the AI (FAQ, pricing, tour details) is accurate and up to date.</li>
         </ul>
       </section>
 
       <section style={{ marginBottom: 32 }}>
         <h2 style={{ fontSize: '1.2rem', fontWeight: 600, marginBottom: 12 }}>3. Acceptable Use</h2>
-        <p>You agree to use Tour Agent only for legitimate business purposes — specifically, handling inbound phone enquiries for your tourism operation. You must not use the service to mislead callers, violate applicable laws, or engage in any fraudulent activity.</p>
+        <p>You agree to use Ringo only for legitimate business purposes — specifically, handling inbound phone enquiries for your tourism operation. You must not use the service to mislead callers, violate applicable laws, or engage in any fraudulent activity.</p>
       </section>
 
       <section style={{ marginBottom: 32 }}>

@@ -1,7 +1,7 @@
 import LandingV2 from './LandingV2'
 
 export const metadata = {
-  title: 'Tour Agent — Design V2',
+  title: 'Ringo — After-hours phone agent for tour operators',
 }
 
 export default function V2Page() {
