@@ -74,6 +74,22 @@
   letter-spacing: 0.12em;
   color: var(--v2-ink-500);
 }
+.v2-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(242, 106, 31, 0.1);
+  border: 1px solid rgba(242, 106, 31, 0.3);
+  border-radius: 100px;
+  padding: 6px 14px 6px 10px;
+  font-family: var(--v2-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--v2-coral-500);
+  margin-bottom: 24px;
+}
 .v2-lead {
   font-size: 18px;
   line-height: 1.65;
