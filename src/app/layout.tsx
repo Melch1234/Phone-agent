@@ -6,20 +6,20 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'Ringo — Never miss an after-hours call again',
   description: 'Ringo answers your phone after hours, captures every booking enquiry, and delivers a morning briefing to your team. Built for tour operators.',
-  metadataBase: new URL('https://ringo.travel'),
+  metadataBase: new URL('https://www.ringo.travel'),
   openGraph: {
     title: 'Ringo — Never miss an after-hours call again',
     description: 'Your guests don\'t keep office hours. Now you don\'t have to either.',
-    url: 'https://ringo.travel',
+    url: 'https://www.ringo.travel',
     siteName: 'Ringo',
     type: 'website',
-    images: [{ url: 'https://ringo.travel/og-image.jpg', width: 1200, height: 630 }],
+    images: [{ url: 'https://www.ringo.travel/og-image.jpg', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Ringo — Never miss an after-hours call again',
     description: 'Your guests don\'t keep office hours. Now you don\'t have to either.',
-    images: ['https://ringo.travel/og-image.jpg'],
+    images: ['https://www.ringo.travel/og-image.jpg'],
   },
 }
 
