@@ -3,83 +3,78 @@ import { NextRequest } from 'next/server'
 
 export const runtime = 'nodejs'
 
-export async function GET(_req: NextRequest) {
+export async function GET(req: NextRequest) {
+  const baseUrl = new URL(req.url).origin
+  const bgData = await fetch(`${baseUrl}/og-bg.jpg`).then(r => r.arrayBuffer())
+  const bgSrc = `data:image/jpeg;base64,${Buffer.from(bgData).toString('base64')}`
+
   return new ImageResponse(
     (
       <div
         style={{
-          width: '1200px',
-          height: '630px',
-          background: '#040d1f',
+          width: '100%',
+          height: '100%',
           display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          justifyContent: 'center',
-          padding: '80px 100px',
           position: 'relative',
           overflow: 'hidden',
           fontFamily: 'system-ui, -apple-system, sans-serif',
         }}
       >
-        {/* Decorative circles */}
-        <div style={{ position: 'absolute', right: -120, top: -120, width: 640, height: 640, borderRadius: '50%', border: '1.5px solid rgba(242,106,31,0.2)', display: 'flex' }} />
-        <div style={{ position: 'absolute', right: -60, top: -60, width: 440, height: 440, borderRadius: '50%', border: '1px solid rgba(242,106,31,0.12)', display: 'flex' }} />
-        <div style={{ position: 'absolute', right: 0, top: 0, width: 260, height: 260, borderRadius: '50%', border: '1px solid rgba(242,106,31,0.08)', display: 'flex' }} />
+        <img alt="" src={bgSrc} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to left, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0.15) 100%)', display: 'flex' }} />
 
-        {/* Badge */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          background: 'rgba(242,106,31,0.12)',
-          border: '1px solid rgba(242,106,31,0.35)',
-          borderRadius: 100,
-          padding: '8px 22px',
-          marginBottom: 44,
-          color: '#F26A1F',
-          fontSize: 15,
-          fontWeight: 700,
-          letterSpacing: '0.12em',
-          textTransform: 'uppercase',
-        }}>
-          After-hours phone agent for tourism
-        </div>
+        <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center', padding: '80px 100px', width: '100%', height: '100%' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            background: 'rgba(242,106,31,0.15)',
+            border: '1px solid rgba(242,106,31,0.4)',
+            borderRadius: 100,
+            padding: '8px 22px',
+            marginBottom: 44,
+            color: '#F26A1F',
+            fontSize: 15,
+            fontWeight: 700,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+          }}>
+            After-hours phone agent for tourism
+          </div>
 
-        {/* Brand name */}
-        <div style={{
-          fontSize: 128,
-          fontWeight: 900,
-          color: '#f0e8d8',
-          letterSpacing: '-0.04em',
-          lineHeight: 1,
-          marginBottom: 28,
-        }}>
-          Ringo.
-        </div>
+          <div style={{
+            fontSize: 128,
+            fontWeight: 900,
+            color: '#0a0a0a',
+            letterSpacing: '-0.04em',
+            lineHeight: 1,
+            marginBottom: 28,
+          }}>
+            Ringo.
+          </div>
 
-        {/* Tagline */}
-        <div style={{
-          fontSize: 30,
-          color: 'rgba(240,232,216,0.6)',
-          lineHeight: 1.45,
-          maxWidth: 700,
-          display: 'flex',
-        }}>
-          Your guests don't keep office hours.{' '}
-          <span style={{ color: '#F26A1F', marginLeft: 8 }}>Now you don't have to either.</span>
-        </div>
+          <div style={{
+            fontSize: 30,
+            color: 'rgba(10,10,10,0.7)',
+            lineHeight: 1.45,
+            maxWidth: 620,
+            display: 'flex',
+          }}>
+            Your guests don't keep office hours.{' '}
+            <span style={{ color: '#0a0a0a', marginLeft: 8 }}>Now you don't have to either.</span>
+          </div>
 
-        {/* Domain */}
-        <div style={{
-          position: 'absolute',
-          bottom: 56,
-          right: 100,
-          color: 'rgba(240,232,216,0.25)',
-          fontSize: 20,
-          fontWeight: 500,
-          letterSpacing: '0.04em',
-          display: 'flex',
-        }}>
-          ringo.travel
+          <div style={{
+            position: 'absolute',
+            bottom: 56,
+            left: 100,
+            color: 'rgba(10,10,10,0.35)',
+            fontSize: 20,
+            fontWeight: 500,
+            letterSpacing: '0.04em',
+            display: 'flex',
+          }}>
+            ringo.travel
+          </div>
         </div>
       </div>
     ),
