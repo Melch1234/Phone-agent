@@ -1,12 +1,13 @@
 import { ImageResponse } from 'next/og'
 import { NextRequest } from 'next/server'
+import fs from 'fs'
+import path from 'path'
 
 export const runtime = 'nodejs'
 
-export async function GET(req: NextRequest) {
-  const baseUrl = new URL(req.url).origin
-  const bgData = await fetch(`${baseUrl}/og-bg.jpg`).then(r => r.arrayBuffer())
-  const bgSrc = `data:image/jpeg;base64,${Buffer.from(bgData).toString('base64')}`
+export async function GET(_req: NextRequest) {
+  const bgData = fs.readFileSync(path.join(process.cwd(), 'public', 'og-bg.jpg'))
+  const bgSrc = `data:image/jpeg;base64,${bgData.toString('base64')}`
 
   return new ImageResponse(
     (
