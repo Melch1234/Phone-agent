@@ -13,13 +13,13 @@ export const metadata: Metadata = {
     url: 'https://www.ringo.travel',
     siteName: 'Ringo',
     type: 'website',
-    images: [{ url: 'https://www.ringo.travel/og-image.jpg', width: 1200, height: 630 }],
+    images: [{ url: 'https://raw.githubusercontent.com/Melch1234/Phone-agent/main/public/og-image.jpg', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Ringo — Never miss an after-hours call again',
     description: 'Your guests don\'t keep office hours. Now you don\'t have to either.',
-    images: ['https://www.ringo.travel/og-image.jpg'],
+    images: ['https://raw.githubusercontent.com/Melch1234/Phone-agent/main/public/og-image.jpg'],
   },
 }
 
