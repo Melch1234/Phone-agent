@@ -1,3 +1,8 @@
+export interface FaqPair {
+  q: string
+  a: string
+}
+
 export interface Operator {
   id: string
   business_name: string
@@ -9,6 +14,7 @@ export interface Operator {
   faq: string
   voice: string | null
   intake_questions: string | null
+  structured_faqs: FaqPair[]
   active: boolean
   plan: 'starter' | 'growth' | 'agency'
   stripe_customer_id: string | null
