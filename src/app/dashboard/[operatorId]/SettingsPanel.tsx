@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import type { FaqPair } from '@/types'
 
+type FaqPairUI = FaqPair & { _uiId: string }
+
 interface Props {
   operatorId: string
   token: string
@@ -11,6 +13,10 @@ interface Props {
   initialFaq: string
   initialIntakeQuestions: string
   initialStructuredFaqs: FaqPair[]
+}
+
+function withId(pair: FaqPair, index: number): FaqPairUI {
+  return { ...pair, _uiId: `${Date.now()}-${index}-${Math.random()}` }
 }
 
 const s = {
@@ -59,14 +65,16 @@ export default function SettingsPanel({
   const [greeting, setGreeting] = useState(initialGreeting)
   const [faq, setFaq] = useState(initialFaq)
   const [intakeQuestions, setIntakeQuestions] = useState(initialIntakeQuestions)
-  const [structuredFaqs, setStructuredFaqs] = useState<FaqPair[]>(initialStructuredFaqs)
+  const [structuredFaqs, setStructuredFaqs] = useState<FaqPairUI[]>(
+    initialStructuredFaqs.map((p, i) => withId(p, i))
+  )
   const [scrapeUrl, setScrapeUrl] = useState('')
   const [scraping, setScraping] = useState(false)
   const [saving, setSaving] = useState(false)
   const [msg, setMsg] = useState<{ text: string; ok: boolean } | null>(null)
 
   function addFaq() {
-    setStructuredFaqs(prev => [...prev, { q: '', a: '' }])
+    setStructuredFaqs(prev => [...prev, { q: '', a: '', _uiId: `new-${Date.now()}-${Math.random()}` }])
   }
 
   function removeFaq(index: number) {
@@ -109,7 +117,7 @@ export default function SettingsPanel({
           operatorId, token, faq, greeting,
           business_name: businessName,
           intake_questions: intakeQuestions,
-          structured_faqs: structuredFaqs,
+          structured_faqs: structuredFaqs.map(({ _uiId, ...pair }) => pair),
         }),
       })
       const data = await res.json()
@@ -150,7 +158,7 @@ export default function SettingsPanel({
         <p style={s.subtitle}>Ringo will know these cold — add as many as you like.</p>
 
         {structuredFaqs.map((pair, i) => (
-          <div key={i}>
+          <div key={pair._uiId}>
             {i > 0 && <div style={s.divider} />}
             <div style={{ marginBottom: '.5rem' }}>
               <label style={s.label}>Question</label>
