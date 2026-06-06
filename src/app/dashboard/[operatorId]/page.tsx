@@ -118,6 +118,7 @@ export default async function DashboardPage({ params }: Props) {
         initialGreeting={operator.greeting ?? ''}
         initialFaq={operator.faq ?? ''}
         initialIntakeQuestions={operator.intake_questions ?? ''}
+        initialStructuredFaqs={Array.isArray(operator.structured_faqs) ? operator.structured_faqs : []}
       />
 
       {allLeads.length > 0 && (
