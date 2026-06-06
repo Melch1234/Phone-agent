@@ -9,9 +9,14 @@ import type { Operator } from '../src/types'
 const OPENAI_REALTIME_URL =
   'wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview'
 
-function buildSystemPrompt(op: Operator): string {
+export function buildSystemPrompt(op: Operator): string {
   const greeting = op.greeting
     ?? `Thanks for calling ${op.business_name}! I'm here to help with any questions about our tours.`
+
+  const faqSection = Array.isArray(op.structured_faqs) && op.structured_faqs.length > 0
+    ? `Frequently asked questions:\n${op.structured_faqs.map(p => `Q: ${p.q}\nA: ${p.a}`).join('\n\n')}\n\n`
+    : ''
+
   return `You are the after-hours phone assistant for ${op.business_name}.
 
 Always respond in English regardless of the language of any reference material.
@@ -23,7 +28,7 @@ Your role:
 - If the caller mentions an emergency, injury, being stranded, or any urgent situation, tell them you are flagging it for immediate attention
 ${op.intake_questions ? `\nAlways work these questions naturally into the conversation:\n${op.intake_questions}` : ''}
 
-About ${op.business_name} and their tours:
+${faqSection}About ${op.business_name} and their tours:
 ${op.faq}
 
 Open every call with: "${greeting}"`
